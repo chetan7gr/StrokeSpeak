@@ -1,0 +1,1609 @@
+﻿=== ENDPOINTS IN main.py ===
+159: @app.get("/")
+172: @app.get("/api/v1/health")
+202: @app.post("/api/v1/auth/register", status_code=201)
+350: @app.post("/api/v1/practice-attempts", status_code=201)
+518: @app.post("/api/v1/practice-attempts/{attempt_id}/pronunciation-assessment")
+582: @app.post("/api/v1/practice-attempts/{attempt_id}/transcribe")
+702: @app.get("/api/v1/practice-attempts")
+747: @app.put("/api/v1/practice-attempts/{attempt_id}/pronunciation-audio")
+801: @app.put("/api/v1/characters/{character_id}/reference-strokes")
+849: @app.get("/api/v1/characters/{character_id}/reference-strokes")
+885: @app.get("/api/v1/lessons/{lesson_id}/reference-audio")
+935: @app.get("/api/v1/lessons")
+979: @app.get("/api/v1/lesson-progress")
+1009: @app.put("/api/v1/lessons/{lesson_id}/progress")
+1061: @app.put("/api/v1/lessons/{lesson_id}/tutorial-video")
+1106: @app.get("/api/v1/languages")
+1148: @app.post("/api/v1/languages", status_code=201)
+1242: @app.get("/api/v1/characters")
+1295: @app.post("/api/v1/characters", status_code=201)
+=== IMPORTS AND CLASSES ===
+4: from fastapi import FastAPI, HTTPException, Query
+7: from pydantic import BaseModel, Field, field_validator
+11: from mysql.connector import Error, IntegrityError
+14: from app.db.database import get_db_connection
+15: from fastapi.responses import Response
+16: from gtts import gTTS
+17: import io
+19: import base64
+20: import hashlib
+21: import json
+22: import re
+23: import secrets
+24: import tempfile
+25: import threading
+26: import os
+27: import mimetypes
+28: import urllib.error
+29: import urllib.request
+30: import uuid
+31: from typing import Literal
+48: class LanguageCreate(BaseModel):
+64: class UserRegister(BaseModel):
+87: class StrokePoint(BaseModel):
+93: class PracticeAttemptCreate(BaseModel):
+98: class PronunciationAudioUpload(BaseModel):
+110: class PronunciationAssessmentCreate(BaseModel):
+121: class LessonProgressUpdate(BaseModel):
+127: class TutorialVideoUpdate(BaseModel):
+140: class ReferenceStrokesUpdate(BaseModel):
+1207: class CharacterCreate(BaseModel):
+=== CREATE TABLE ===
+10: CREATE TABLE IF NOT EXISTS users (
+20: CREATE TABLE IF NOT EXISTS languages (
+29: CREATE TABLE IF NOT EXISTS characters (
+43: CREATE TABLE IF NOT EXISTS learning_lessons (
+65: CREATE TABLE IF NOT EXISTS lesson_progress (
+80: CREATE TABLE IF NOT EXISTS practice_attempts (
+101: # CREATE TABLE IF NOT EXISTS does not add columns to existing tables.
+=== GET / ===
+{
+    "project":  "StrokeSpeak",
+    "message":  "Backend is running!"
+}
+=== GET /api/v1/health ===
+{
+    "status":  "healthy",
+    "service":  "StrokeSpeak API",
+    "database":  "connected"
+}
+=== GET /api/v1/languages ===
+{
+    "languages":  [
+                      {
+                          "id":  6,
+                          "name":  "Hindi",
+                          "script_code":  "Deva"
+                      },
+                      {
+                          "id":  5,
+                          "name":  "Japanese",
+                          "script_code":  "ja-hiragana"
+                      },
+                      {
+                          "id":  21,
+                          "name":  "Kannada",
+                          "script_code":  "kn"
+                      },
+                      {
+                          "id":  9,
+                          "name":  "Korean",
+                          "script_code":  "ko"
+                      },
+                      {
+                          "id":  20,
+                          "name":  "Malayalam",
+                          "script_code":  "ml"
+                      },
+                      {
+                          "id":  19,
+                          "name":  "Tamil",
+                          "script_code":  "ta"
+                      },
+                      {
+                          "id":  18,
+                          "name":  "Telugu",
+                          "script_code":  "te"
+                      }
+                  ]
+}
+=== GET /api/v1/characters ===
+{
+    "characters":  [
+                       {
+                           "id":  1,
+                           "language_id":  1,
+                           "language_name":  "string",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Hiragana character",
+                           "pronunciation_text":  "a",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  2,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "a",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  3,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "o",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  5,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤\u0085",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "a",
+                           "has_reference":  1
+                       },
+                       {
+                           "id":  7,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "aa",
+                           "has_reference":  1
+                       },
+                       {
+                           "id":  8,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "i",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  9,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "ee",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  10,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "u",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  11,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "oo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  12,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ka",
+                           "has_reference":  1
+                       },
+                       {
+                           "id":  13,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤®",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ma",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  14,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¨",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "na",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  15,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤ª",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "pa",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  16,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤°",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ra",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  17,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¹",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  18,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¯",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ya",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  19,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¸",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "sa",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  20,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤²",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "la",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  21,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ta",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  22,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¦",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "da",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  23,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¬",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ba",
+                           "has_reference":  1
+                       },
+                       {
+                           "id":  24,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°\u0085",
+                           "meaning":  "Starter vowel",
+                           "pronunciation_text":  "a",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  25,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®\u0085",
+                           "meaning":  "Starter vowel",
+                           "pronunciation_text":  "a",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  26,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´\u0085",
+                           "meaning":  "Starter vowel",
+                           "pronunciation_text":  "a",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  27,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²\u0085",
+                           "meaning":  "Starter vowel",
+                           "pronunciation_text":  "a",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  28,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "i",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  29,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "u",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  30,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "e",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  31,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ka",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  32,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ki",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  33,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ku",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  34,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ke",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  35,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ko",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  36,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "sa",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  37,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "shi",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  38,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "su",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  39,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "se",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  40,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "so",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  41,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ta",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  42,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¡",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "chi",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  43,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¤",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "tsu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  44,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¦",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "te",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  45,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¨",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "to",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  46,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ãª",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "na",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  47,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã«",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ni",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  48,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¬",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "nu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  49,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã­",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ne",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  50,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã®",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "no",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  51,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¯",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  52,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã²",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "hi",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  53,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ãµ",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "fu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  54,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¸",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "he",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  55,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã»",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ho",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  56,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¾",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ma",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  57,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã¿",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "mi",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  58,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "mu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  59,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "me",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  60,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "mo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  61,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ya",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  62,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "yu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  63,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "yo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  64,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ra",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  65,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ri",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  66,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ru",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  67,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "re",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  68,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "ro",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  69,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "wa",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  70,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "o",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  71,
+                           "language_id":  5,
+                           "language_name":  "Japanese",
+                           "character_text":  "ã",
+                           "meaning":  "Japanese Katakana character",
+                           "pronunciation_text":  "n",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  72,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "e",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  73,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "ai",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  74,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "o",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  75,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "au",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  76,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi vowel",
+                           "pronunciation_text":  "ri",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  77,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "kha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  78,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ga",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  79,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "gha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  80,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "nga",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  81,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "cha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  82,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "chha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  83,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ja",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  84,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "jha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  85,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "nya",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  86,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "ta",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  87,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤ ",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "tha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  88,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¡",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "da",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  89,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¢",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "dha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  90,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤£",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "na",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  91,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¥",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "tha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  92,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤§",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "dha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  93,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤«",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "pha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  94,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤­",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "bha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  95,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤µ",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "va",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  96,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤¶",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "sha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  97,
+                           "language_id":  6,
+                           "language_name":  "Hindi",
+                           "character_text":  "à¤·",
+                           "meaning":  "Hindi consonant",
+                           "pronunciation_text":  "sha",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  98,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "aa",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  99,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "i",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  100,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ii",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  101,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "u",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  102,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "uu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  103,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ru",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  104,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "e",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  105,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ee",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  106,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ai",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  107,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "o",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  108,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "oo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  109,
+                           "language_id":  18,
+                           "language_name":  "Telugu",
+                           "character_text":  "à°",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "au",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  110,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "aa",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  111,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "i",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  112,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ii",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  113,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "u",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  114,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "uu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  115,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "e",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  116,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ee",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  117,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ai",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  118,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "o",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  119,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "oo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  120,
+                           "language_id":  19,
+                           "language_name":  "Tamil",
+                           "character_text":  "à®",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "au",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  121,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "aa",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  122,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "i",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  123,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ii",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  124,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "u",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  125,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "uu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  126,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ru",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  127,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "e",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  128,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ee",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  129,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ai",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  130,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "o",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  131,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "oo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  132,
+                           "language_id":  20,
+                           "language_name":  "Malayalam",
+                           "character_text":  "à´",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "au",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  133,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "aa",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  134,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "i",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  135,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ii",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  136,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "u",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  137,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "uu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  138,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ru",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  139,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "e",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  140,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ee",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  141,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "ai",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  142,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "o",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  143,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "oo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  144,
+                           "language_id":  21,
+                           "language_name":  "Kannada",
+                           "character_text":  "à²",
+                           "meaning":  "Independent vowel",
+                           "pronunciation_text":  "au",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  145,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã±",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "g/k",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  146,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã´",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "n",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  147,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã·",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "d/t",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  148,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã¹",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "r/l",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  149,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "m",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  150,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "b/p",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  151,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "s",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  152,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "ng",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  153,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "j",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  154,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "ch",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  155,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "k",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  156,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "t",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  157,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "p",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  158,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "h",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  159,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "a",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  160,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "ya",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  161,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "eo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  162,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "yeo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  163,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "o",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  164,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "yo",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  165,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "u",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  166,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085 ",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "yu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  167,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085¡",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "eu",
+                           "has_reference":  0
+                       },
+                       {
+                           "id":  168,
+                           "language_id":  9,
+                           "language_name":  "Korean",
+                           "character_text":  "ã\u0085£",
+                           "meaning":  "Hangul jamo",
+                           "pronunciation_text":  "i",
+                           "has_reference":  0
+                       }
+                   ]
+}

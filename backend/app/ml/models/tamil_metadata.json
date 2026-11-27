@@ -1,0 +1,128 @@
+{
+  "model_name": "StrokeSpeak Tamil Candidate CNN",
+  "version": "2.0.0-candidate",
+  "status": "production_promoted",
+  "script_code": "ta",
+  "language": "Tamil",
+  "classes": [
+    "அ",
+    "ஆ",
+    "இ",
+    "ஈ",
+    "உ",
+    "ஊ",
+    "எ",
+    "ஏ",
+    "ஐ",
+    "ஒ",
+    "ஓ",
+    "ஔ"
+  ],
+  "num_classes": 12,
+  "input_dimensions": [
+    1,
+    1,
+    32,
+    32
+  ],
+  "input_size": [
+    1,
+    1,
+    32,
+    32
+  ],
+  "best_val_accuracy_pct": 100.0,
+  "heldout_writer_test": {
+    "correct": 120,
+    "total": 120,
+    "accuracy_pct": 100.0
+  },
+  "independent_font_test": {
+    "correct": 24,
+    "total": 24,
+    "accuracy_pct": 100.0
+  },
+  "canonical_700x320_10px": {
+    "passed": 12,
+    "total": 12,
+    "accuracy_pct": 100.0,
+    "per_character": [
+      {
+        "character": "அ",
+        "predicted": "அ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ஆ",
+        "predicted": "ஆ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "இ",
+        "predicted": "இ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ஈ",
+        "predicted": "ஈ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "உ",
+        "predicted": "உ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ஊ",
+        "predicted": "ஊ",
+        "confidence": 99.99,
+        "is_match": true
+      },
+      {
+        "character": "எ",
+        "predicted": "எ",
+        "confidence": 99.96,
+        "is_match": true
+      },
+      {
+        "character": "ஏ",
+        "predicted": "ஏ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ஐ",
+        "predicted": "ஐ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ஒ",
+        "predicted": "ஒ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ஓ",
+        "predicted": "ஓ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ஔ",
+        "predicted": "ஔ",
+        "confidence": 100.0,
+        "is_match": true
+      }
+    ]
+  },
+  "generated_at_utc": "2026-11-27T00:22:59Z",
+  "model_file": "tamil_v1.pt",
+  "weights_file": "tamil_weights.pt",
+  "promoted_at_utc": "2026-11-27T00:23:02Z"
+}

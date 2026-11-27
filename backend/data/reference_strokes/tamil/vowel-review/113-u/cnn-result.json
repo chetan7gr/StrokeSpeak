@@ -1,0 +1,31 @@
+{
+  "status": "success",
+  "script_code": "ta",
+  "language": "Tamil",
+  "predicted_character": "உ",
+  "confidence": 80.52,
+  "confidence_level": "high",
+  "is_reliable": true,
+  "expected_character": "உ",
+  "is_match": true,
+  "top_predictions": [
+    {
+      "character": "உ",
+      "confidence": 80.52
+    },
+    {
+      "character": "ஆ",
+      "confidence": 14.16
+    },
+    {
+      "character": "இ",
+      "confidence": 3.72
+    }
+  ],
+  "inference_time_ms": 2.86,
+  "model_name": "StrokeSpeak Tamil CNN",
+  "model_version": "1.0.0",
+  "device": "CPU",
+  "inference_runtime": "torchscript_cpu",
+  "message": "Character recognized as 'உ' with high confidence (80.52%)."
+}

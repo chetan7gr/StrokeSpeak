@@ -1,0 +1,221 @@
+[
+  {
+    "id": 25,
+    "character": "அ",
+    "geometry": "existing_candidate_pending_review",
+    "cnn": {
+      "match": false,
+      "predicted": "இ",
+      "confidence": 89.71
+    }
+  },
+  {
+    "id": 110,
+    "character": "ஆ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "இ",
+      "confidence": 57.61,
+      "status": "success"
+    }
+  },
+  {
+    "id": 111,
+    "character": "இ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "not_applicable",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "passed"
+    },
+    "cnn": {
+      "match": true,
+      "predicted": "இ",
+      "confidence": 98.23,
+      "status": "success"
+    }
+  },
+  {
+    "id": 112,
+    "character": "ஈ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink. The two dots are stationary contacts, with no source-supported travel direction.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "அ",
+      "confidence": 49.88,
+      "status": "success"
+    }
+  },
+  {
+    "id": 113,
+    "character": "உ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "not_applicable",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "passed"
+    },
+    "cnn": {
+      "match": true,
+      "predicted": "உ",
+      "confidence": 80.52,
+      "status": "success"
+    }
+  },
+  {
+    "id": 114,
+    "character": "ஊ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "ஆ",
+      "confidence": 96.97,
+      "status": "success"
+    }
+  },
+  {
+    "id": 115,
+    "character": "எ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "அ",
+      "confidence": 65.71,
+      "status": "success"
+    }
+  },
+  {
+    "id": 116,
+    "character": "ஏ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "அ",
+      "confidence": 67.36,
+      "status": "success"
+    }
+  },
+  {
+    "id": 117,
+    "character": "ஐ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "ஆ",
+      "confidence": 97.39,
+      "status": "success"
+    }
+  },
+  {
+    "id": 118,
+    "character": "ஒ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "இ",
+      "confidence": 99.98,
+      "status": "success"
+    }
+  },
+  {
+    "id": 119,
+    "character": "ஓ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "இ",
+      "confidence": 99.98,
+      "status": "success"
+    }
+  },
+  {
+    "id": 120,
+    "character": "ஔ",
+    "geometry": "source_pinned_unreviewed",
+    "pen_lift": "Replay segments follow visible progression and restarts. The GIF cannot resolve every physical pen lift at joined or retraced ink.",
+    "tests": {
+      "positive_trace": "passed",
+      "positive_trace_resampled_and_perturbed": "passed",
+      "reversed_stroke_order": "passed",
+      "reversed_stroke_direction": "passed",
+      "positive_trace_with_cnn": "failed"
+    },
+    "cnn": {
+      "match": false,
+      "predicted": "ஆ",
+      "confidence": 92.78,
+      "status": "success"
+    }
+  }
+]

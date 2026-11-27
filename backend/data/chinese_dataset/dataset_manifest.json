@@ -1,0 +1,320 @@
+{
+  "script_code": "zh-hans",
+  "language": "Simplified Chinese",
+  "source": "StrokeSpeak Multi-Writer Logographic Simulation Engine (Standard Ministry of Education Hanzi Orthography)",
+  "license": "Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
+  "num_classes": 9,
+  "base_samples_per_class": 20,
+  "total_base_samples": 180,
+  "train_samples_per_class": 14,
+  "val_samples_per_class": 3,
+  "test_samples_per_class": 3,
+  "classes": {
+    "一": {
+      "prefix": "char_YI",
+      "character_id": 241,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_YI_0.jpg",
+        "char_YI_1.jpg",
+        "char_YI_2.jpg",
+        "char_YI_3.jpg",
+        "char_YI_4.jpg",
+        "char_YI_5.jpg",
+        "char_YI_6.jpg",
+        "char_YI_7.jpg",
+        "char_YI_8.jpg",
+        "char_YI_9.jpg",
+        "char_YI_10.jpg",
+        "char_YI_11.jpg",
+        "char_YI_12.jpg",
+        "char_YI_13.jpg"
+      ],
+      "val_files": [
+        "char_YI_14.jpg",
+        "char_YI_15.jpg",
+        "char_YI_16.jpg"
+      ],
+      "test_files": [
+        "char_YI_17.jpg",
+        "char_YI_18.jpg",
+        "char_YI_19.jpg"
+      ]
+    },
+    "二": {
+      "prefix": "char_ER",
+      "character_id": 242,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_ER_0.jpg",
+        "char_ER_1.jpg",
+        "char_ER_2.jpg",
+        "char_ER_3.jpg",
+        "char_ER_4.jpg",
+        "char_ER_5.jpg",
+        "char_ER_6.jpg",
+        "char_ER_7.jpg",
+        "char_ER_8.jpg",
+        "char_ER_9.jpg",
+        "char_ER_10.jpg",
+        "char_ER_11.jpg",
+        "char_ER_12.jpg",
+        "char_ER_13.jpg"
+      ],
+      "val_files": [
+        "char_ER_14.jpg",
+        "char_ER_15.jpg",
+        "char_ER_16.jpg"
+      ],
+      "test_files": [
+        "char_ER_17.jpg",
+        "char_ER_18.jpg",
+        "char_ER_19.jpg"
+      ]
+    },
+    "三": {
+      "prefix": "char_SAN",
+      "character_id": 243,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_SAN_0.jpg",
+        "char_SAN_1.jpg",
+        "char_SAN_2.jpg",
+        "char_SAN_3.jpg",
+        "char_SAN_4.jpg",
+        "char_SAN_5.jpg",
+        "char_SAN_6.jpg",
+        "char_SAN_7.jpg",
+        "char_SAN_8.jpg",
+        "char_SAN_9.jpg",
+        "char_SAN_10.jpg",
+        "char_SAN_11.jpg",
+        "char_SAN_12.jpg",
+        "char_SAN_13.jpg"
+      ],
+      "val_files": [
+        "char_SAN_14.jpg",
+        "char_SAN_15.jpg",
+        "char_SAN_16.jpg"
+      ],
+      "test_files": [
+        "char_SAN_17.jpg",
+        "char_SAN_18.jpg",
+        "char_SAN_19.jpg"
+      ]
+    },
+    "人": {
+      "prefix": "char_REN",
+      "character_id": 244,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_REN_0.jpg",
+        "char_REN_1.jpg",
+        "char_REN_2.jpg",
+        "char_REN_3.jpg",
+        "char_REN_4.jpg",
+        "char_REN_5.jpg",
+        "char_REN_6.jpg",
+        "char_REN_7.jpg",
+        "char_REN_8.jpg",
+        "char_REN_9.jpg",
+        "char_REN_10.jpg",
+        "char_REN_11.jpg",
+        "char_REN_12.jpg",
+        "char_REN_13.jpg"
+      ],
+      "val_files": [
+        "char_REN_14.jpg",
+        "char_REN_15.jpg",
+        "char_REN_16.jpg"
+      ],
+      "test_files": [
+        "char_REN_17.jpg",
+        "char_REN_18.jpg",
+        "char_REN_19.jpg"
+      ]
+    },
+    "大": {
+      "prefix": "char_DA",
+      "character_id": 245,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_DA_0.jpg",
+        "char_DA_1.jpg",
+        "char_DA_2.jpg",
+        "char_DA_3.jpg",
+        "char_DA_4.jpg",
+        "char_DA_5.jpg",
+        "char_DA_6.jpg",
+        "char_DA_7.jpg",
+        "char_DA_8.jpg",
+        "char_DA_9.jpg",
+        "char_DA_10.jpg",
+        "char_DA_11.jpg",
+        "char_DA_12.jpg",
+        "char_DA_13.jpg"
+      ],
+      "val_files": [
+        "char_DA_14.jpg",
+        "char_DA_15.jpg",
+        "char_DA_16.jpg"
+      ],
+      "test_files": [
+        "char_DA_17.jpg",
+        "char_DA_18.jpg",
+        "char_DA_19.jpg"
+      ]
+    },
+    "口": {
+      "prefix": "char_KOU",
+      "character_id": 247,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_KOU_0.jpg",
+        "char_KOU_1.jpg",
+        "char_KOU_2.jpg",
+        "char_KOU_3.jpg",
+        "char_KOU_4.jpg",
+        "char_KOU_5.jpg",
+        "char_KOU_6.jpg",
+        "char_KOU_7.jpg",
+        "char_KOU_8.jpg",
+        "char_KOU_9.jpg",
+        "char_KOU_10.jpg",
+        "char_KOU_11.jpg",
+        "char_KOU_12.jpg",
+        "char_KOU_13.jpg"
+      ],
+      "val_files": [
+        "char_KOU_14.jpg",
+        "char_KOU_15.jpg",
+        "char_KOU_16.jpg"
+      ],
+      "test_files": [
+        "char_KOU_17.jpg",
+        "char_KOU_18.jpg",
+        "char_KOU_19.jpg"
+      ]
+    },
+    "日": {
+      "prefix": "char_RI",
+      "character_id": 248,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_RI_0.jpg",
+        "char_RI_1.jpg",
+        "char_RI_2.jpg",
+        "char_RI_3.jpg",
+        "char_RI_4.jpg",
+        "char_RI_5.jpg",
+        "char_RI_6.jpg",
+        "char_RI_7.jpg",
+        "char_RI_8.jpg",
+        "char_RI_9.jpg",
+        "char_RI_10.jpg",
+        "char_RI_11.jpg",
+        "char_RI_12.jpg",
+        "char_RI_13.jpg"
+      ],
+      "val_files": [
+        "char_RI_14.jpg",
+        "char_RI_15.jpg",
+        "char_RI_16.jpg"
+      ],
+      "test_files": [
+        "char_RI_17.jpg",
+        "char_RI_18.jpg",
+        "char_RI_19.jpg"
+      ]
+    },
+    "月": {
+      "prefix": "char_YUE",
+      "character_id": 249,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_YUE_0.jpg",
+        "char_YUE_1.jpg",
+        "char_YUE_2.jpg",
+        "char_YUE_3.jpg",
+        "char_YUE_4.jpg",
+        "char_YUE_5.jpg",
+        "char_YUE_6.jpg",
+        "char_YUE_7.jpg",
+        "char_YUE_8.jpg",
+        "char_YUE_9.jpg",
+        "char_YUE_10.jpg",
+        "char_YUE_11.jpg",
+        "char_YUE_12.jpg",
+        "char_YUE_13.jpg"
+      ],
+      "val_files": [
+        "char_YUE_14.jpg",
+        "char_YUE_15.jpg",
+        "char_YUE_16.jpg"
+      ],
+      "test_files": [
+        "char_YUE_17.jpg",
+        "char_YUE_18.jpg",
+        "char_YUE_19.jpg"
+      ]
+    },
+    "山": {
+      "prefix": "char_SHAN",
+      "character_id": 252,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "char_SHAN_0.jpg",
+        "char_SHAN_1.jpg",
+        "char_SHAN_2.jpg",
+        "char_SHAN_3.jpg",
+        "char_SHAN_4.jpg",
+        "char_SHAN_5.jpg",
+        "char_SHAN_6.jpg",
+        "char_SHAN_7.jpg",
+        "char_SHAN_8.jpg",
+        "char_SHAN_9.jpg",
+        "char_SHAN_10.jpg",
+        "char_SHAN_11.jpg",
+        "char_SHAN_12.jpg",
+        "char_SHAN_13.jpg"
+      ],
+      "val_files": [
+        "char_SHAN_14.jpg",
+        "char_SHAN_15.jpg",
+        "char_SHAN_16.jpg"
+      ],
+      "test_files": [
+        "char_SHAN_17.jpg",
+        "char_SHAN_18.jpg",
+        "char_SHAN_19.jpg"
+      ]
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "model_name": "StrokeSpeak Sanskrit (Devanagari) Candidate CNN",
+  "version": "2.0.0-candidate",
+  "status": "production_promoted",
+  "script_code": "sa-devanagari",
+  "language": "Sanskrit (Devanagari)",
+  "classes": [
+    "अ",
+    "आ",
+    "इ",
+    "ई",
+    "उ",
+    "ऊ",
+    "ए",
+    "ऐ",
+    "ओ",
+    "औ"
+  ],
+  "num_classes": 10,
+  "input_dimensions": [
+    1,
+    1,
+    32,
+    32
+  ],
+  "input_size": [
+    1,
+    1,
+    32,
+    32
+  ],
+  "best_val_accuracy_pct": 100.0,
+  "heldout_writer_test": {
+    "correct": 100,
+    "total": 100,
+    "accuracy_pct": 100.0
+  },
+  "independent_font_test": {
+    "correct": 20,
+    "total": 20,
+    "accuracy_pct": 100.0
+  },
+  "canonical_700x320_10px": {
+    "passed": 10,
+    "total": 10,
+    "accuracy_pct": 100.0,
+    "per_character": [
+      {
+        "character": "अ",
+        "predicted": "अ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "आ",
+        "predicted": "आ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "इ",
+        "predicted": "इ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ई",
+        "predicted": "ई",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "उ",
+        "predicted": "उ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ऊ",
+        "predicted": "ऊ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ए",
+        "predicted": "ए",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ऐ",
+        "predicted": "ऐ",
+        "confidence": 100.0,
+        "is_match": true
+      },
+      {
+        "character": "ओ",
+        "predicted": "ओ",
+        "confidence": 99.99,
+        "is_match": true
+      },
+      {
+        "character": "औ",
+        "predicted": "औ",
+        "confidence": 100.0,
+        "is_match": true
+      }
+    ]
+  },
+  "generated_at_utc": "2026-11-27T00:22:33Z",
+  "model_file": "sanskrit_devanagari_v1.pt",
+  "weights_file": "sanskrit_devanagari_weights.pt",
+  "promoted_at_utc": "2026-11-27T00:23:02Z"
+}

@@ -1,0 +1,250 @@
+{
+  "sanskrit": [
+    {
+      "char": "अ",
+      "id": 216,
+      "strokes": 5,
+      "svg_strokes": 5,
+      "points": 76,
+      "viewbox": "0 0 100 100",
+      "shape_score": 82.56,
+      "order_score": 82.59,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "आ",
+      "id": 217,
+      "strokes": 6,
+      "svg_strokes": 6,
+      "points": 96,
+      "viewbox": "0 0 100 100",
+      "shape_score": 82.03,
+      "order_score": 84.16,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "इ",
+      "id": 218,
+      "strokes": 4,
+      "svg_strokes": 4,
+      "points": 70,
+      "viewbox": "0 0 100 100",
+      "shape_score": 92.71,
+      "order_score": 93.61,
+      "feedback": "Your overall character shape is close to the reference. Your stroke paths and order are close to the reference. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ई",
+      "id": 219,
+      "strokes": 5,
+      "svg_strokes": 5,
+      "points": 84,
+      "viewbox": "0 0 100 100",
+      "shape_score": 93.01,
+      "order_score": 93.07,
+      "feedback": "Your overall character shape is close to the reference. Your stroke paths and order are close to the reference. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "उ",
+      "id": 220,
+      "strokes": 3,
+      "svg_strokes": 3,
+      "points": 50,
+      "viewbox": "0 0 100 100",
+      "shape_score": 93.23,
+      "order_score": 90.78,
+      "feedback": "Your overall character shape is close to the reference. Your stroke paths and order are close to the reference. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ऊ",
+      "id": 221,
+      "strokes": 4,
+      "svg_strokes": 4,
+      "points": 66,
+      "viewbox": "0 0 100 100",
+      "shape_score": 89.6,
+      "order_score": 87.49,
+      "feedback": "Your overall character shape is close to the reference. Your stroke paths and order are close to the reference. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ए",
+      "id": 223,
+      "strokes": 3,
+      "svg_strokes": 3,
+      "points": 62,
+      "viewbox": "0 0 100 100",
+      "shape_score": 86.53,
+      "order_score": 86.14,
+      "feedback": "Your overall character shape is close to the reference. Your stroke paths and order are close to the reference. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ऐ",
+      "id": 224,
+      "strokes": 4,
+      "svg_strokes": 4,
+      "points": 74,
+      "viewbox": "0 0 100 100",
+      "shape_score": 88.6,
+      "order_score": 88.52,
+      "feedback": "Your overall character shape is close to the reference. Your stroke paths and order are close to the reference. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ओ",
+      "id": 225,
+      "strokes": 7,
+      "svg_strokes": 7,
+      "points": 110,
+      "viewbox": "0 0 100 100",
+      "shape_score": 84.03,
+      "order_score": 84.06,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "औ",
+      "id": 226,
+      "strokes": 8,
+      "svg_strokes": 8,
+      "points": 124,
+      "viewbox": "0 0 100 100",
+      "shape_score": 85.28,
+      "order_score": 84.56,
+      "feedback": "Your overall character shape is close to the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    }
+  ],
+  "tamil": [
+    {
+      "char": "அ",
+      "id": 25,
+      "strokes": 3,
+      "svg_strokes": 3,
+      "points": 94,
+      "viewbox": "0 0 100 100",
+      "shape_score": 81.88,
+      "order_score": 78.56,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ஆ",
+      "id": 110,
+      "strokes": 4,
+      "svg_strokes": 4,
+      "points": 128,
+      "viewbox": "0 0 100 100",
+      "shape_score": 84.98,
+      "order_score": 85.67,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. Your stroke paths and order are close to the reference. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "இ",
+      "id": 111,
+      "strokes": 3,
+      "svg_strokes": 3,
+      "points": 94,
+      "viewbox": "0 0 100 100",
+      "shape_score": 84.49,
+      "order_score": 85.19,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. Your stroke paths and order are close to the reference. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ஈ",
+      "id": 112,
+      "strokes": 5,
+      "svg_strokes": 5,
+      "points": 68,
+      "viewbox": "0 0 100 100",
+      "shape_score": 83.42,
+      "order_score": 82.47,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "உ",
+      "id": 113,
+      "strokes": 2,
+      "svg_strokes": 2,
+      "points": 58,
+      "viewbox": "0 0 100 100",
+      "shape_score": 76.66,
+      "order_score": 76.73,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ஊ",
+      "id": 114,
+      "strokes": 4,
+      "svg_strokes": 4,
+      "points": 104,
+      "viewbox": "0 0 100 100",
+      "shape_score": 81.54,
+      "order_score": 78.18,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "எ",
+      "id": 115,
+      "strokes": 2,
+      "svg_strokes": 2,
+      "points": 58,
+      "viewbox": "0 0 100 100",
+      "shape_score": 71.73,
+      "order_score": 74.01,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ஏ",
+      "id": 116,
+      "strokes": 3,
+      "svg_strokes": 3,
+      "points": 70,
+      "viewbox": "0 0 100 100",
+      "shape_score": 70.02,
+      "order_score": 73.35,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ஐ",
+      "id": 117,
+      "strokes": 3,
+      "svg_strokes": 3,
+      "points": 74,
+      "viewbox": "0 0 100 100",
+      "shape_score": 80.78,
+      "order_score": 79.18,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ஒ",
+      "id": 118,
+      "strokes": 3,
+      "svg_strokes": 3,
+      "points": 76,
+      "viewbox": "0 0 100 100",
+      "shape_score": 86.03,
+      "order_score": 84.18,
+      "feedback": "Your overall character shape is close to the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ஓ",
+      "id": 119,
+      "strokes": 3,
+      "svg_strokes": 3,
+      "points": 92,
+      "viewbox": "0 0 100 100",
+      "shape_score": 84.95,
+      "order_score": 84.09,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    },
+    {
+      "char": "ஔ",
+      "id": 120,
+      "strokes": 5,
+      "svg_strokes": 5,
+      "points": 120,
+      "viewbox": "0 0 100 100",
+      "shape_score": 84.49,
+      "order_score": 82.72,
+      "feedback": "Your character is partly similar; compare its width, height, and curves with the reference. The stroke order is partly matched; replay the guide and compare each stroke's direction. These are geometric prototype estimates, not scores from a trained handwriting AI model."
+    }
+  ],
+  "initial_attempts": 113,
+  "final_attempts": 113
+}

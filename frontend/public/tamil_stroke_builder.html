@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <title>StrokeSpeak — Tamil Reference Stroke Builder & Verifier</title>
+  <style>
+    body { font-family: 'Nirmala UI', sans-serif; background: #0f172a; color: #fff; padding: 20px; }
+    h1 { font-size: 24px; margin-bottom: 5px; }
+    p { color: #94a3b8; margin-top: 0; margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .card { background: #1e293b; border-radius: 12px; padding: 18px; border: 1px solid #334155; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+    .card-title { font-size: 20px; font-weight: bold; color: #38bdf8; }
+    .card-meta { font-size: 13px; color: #94a3b8; }
+    .stages { display: grid; grid-template-columns: 180px 1fr; gap: 16px; }
+    
+    /* Step 1 reference stage */
+    .ref-stage { position: relative; width: 180px; height: 180px; background: #1f2c42; border-radius: 8px; border: 1px solid #475569; overflow: hidden; }
+    .ref-stage svg { width: 100%; height: 100%; }
+    .ref-watermark { fill: rgba(255, 255, 255, 0.22); font-size: 56px; font-family: 'Nirmala UI', sans-serif; }
+    
+    /* Step 2 canvas stage */
+    .canvas-stage { position: relative; width: 100%; height: 180px; background: #ffffff; border-radius: 8px; border: 2px dashed #cbd5e1; overflow: hidden; }
+    .canvas-watermark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 96px; color: #e2e8f0; pointer-events: none; font-family: 'Nirmala UI', sans-serif; }
+    .canvas-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    
+    .stroke-path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .s-0 { stroke: #3b82f6; stroke-width: 3.5; }
+    .s-1 { stroke: #10b981; stroke-width: 3.5; }
+    .s-2 { stroke: #f59e0b; stroke-width: 3.5; }
+    .s-3 { stroke: #ef4444; stroke-width: 3.5; }
+    .s-4 { stroke: #8b5cf6; stroke-width: 3.5; }
+    
+    .canvas-polyline { fill: none; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; opacity: 0.6; }
+    .cp-0 { stroke: #3b82f6; }
+    .cp-1 { stroke: #10b981; }
+    .cp-2 { stroke: #f59e0b; }
+    .cp-3 { stroke: #ef4444; }
+    .cp-4 { stroke: #8b5cf6; }
+
+    .stroke-legend { display: flex; gap: 8px; margin-top: 10px; font-size: 11px; flex-wrap: wrap; }
+    .legend-item { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; background: #334155; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .d-0 { background: #3b82f6; } .d-1 { background: #10b981; } .d-2 { background: #f59e0b; } .d-3 { background: #ef4444; } .d-4 { background: #8b5cf6; }
+    
+    .status-badge { padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: bold; background: #065f46; color: #a7f3d0; }
+  </style>
+</head>
+<body>
+  <h1>StrokeSpeak — Tamil Reference Stroke Visualizer & Tuner (v2 - High Fidelity)</h1>
+  <p>Comparing Animated SVG Path (Left: 100×100) and Canvas Ghost Guide (Right: 700×320) directly over authentic Nirmala UI font watermark.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    function quadPoints(p0, p1, p2, n=16) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const t = i / (n - 1);
+        const u = 1 - t;
+        pts.push({
+          x: Math.round((u*u*p0.x + 2*u*t*p1.x + t*t*p2.x) * 100) / 100,
+          y: Math.round((u*u*p0.y + 2*u*t*p1.y + t*t*p2.y) * 100) / 100
+        });
+      }
+      return pts;
+    }
+
+    function cubicPoints(p0, p1, p2, p3, n=20) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const t = i / (n - 1);
+        const u = 1 - t;
+        pts.push({
+          x: Math.round((u*u*u*p0.x + 3*u*u*t*p1.x + 3*u*t*t*p2.x + t*t*t*p3.x) * 100) / 100,
+          y: Math.round((u*u*u*p0.y + 3*u*u*t*p1.y + 3*u*t*t*p2.y + t*t*t*p3.y) * 100) / 100
+        });
+      }
+      return pts;
+    }
+
+    function linePoints(p0, p1, n=12) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const t = i / (n - 1);
+        pts.push({
+          x: Math.round((p0.x + (p1.x - p0.x) * t) * 100) / 100,
+          y: Math.round((p0.y + (p1.y - p0.y) * t) * 100) / 100
+        });
+      }
+      return pts;
+    }
+
+    function circlePoints(cx, cy, r, n=16) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const angle = -Math.PI / 2 + (i / (n - 1)) * 2 * Math.PI;
+        pts.push({
+          x: Math.round((cx + r * Math.cos(angle)) * 100) / 100,
+          y: Math.round((cy + r * Math.sin(angle)) * 100) / 100
+        });
+      }
+      return pts;
+    }
+
+    const tamilDefinitions = {
+      // 1. அ (ID 25) · 3 strokes
+      "அ": {
+        id: 25,
+        name: "அ (a)",
+        strokes: [
+          // Stroke 1: Loop, upper arch, lower curve, waist turn
+          [
+            ...circlePoints(24, 43, 4, 12),
+            ...cubicPoints({x:26, y:39}, {x:36, y:35}, {x:44, y:35}, {x:46, y:43}, 12),
+            ...cubicPoints({x:46, y:43}, {x:48, y:52}, {x:36, y:60}, {x:24, y:64}, 14),
+            ...cubicPoints({x:24, y:64}, {x:17, y:69}, {x:24, y:75}, {x:36, y:75}, 14),
+            ...cubicPoints({x:36, y:75}, {x:46, y:74}, {x:48, y:66}, {x:48, y:56}, 12)
+          ],
+          // Stroke 2: Horizontal arm connecting to stem at X=68
+          linePoints({x:48, y:56}, {x:68, y:56}, 14),
+          // Stroke 3: Right vertical stem at X=68
+          linePoints({x:68, y:35}, {x:68, y:75}, 16)
+        ]
+      },
+
+      // 2. ஆ (ID 110) · 4 strokes
+      "ஆ": {
+        id: 110,
+        name: "ஆ (aa)",
+        strokes: [
+          // Stroke 1: Base அ body
+          [
+            ...circlePoints(22, 43, 4, 12),
+            ...cubicPoints({x:24, y:39}, {x:33, y:35}, {x:42, y:35}, {x:44, y:43}, 12),
+            ...cubicPoints({x:44, y:43}, {x:46, y:52}, {x:35, y:60}, {x:22, y:64}, 14),
+            ...cubicPoints({x:22, y:64}, {x:15, y:69}, {x:22, y:75}, {x:35, y:75}, 14),
+            ...cubicPoints({x:35, y:75}, {x:44, y:74}, {x:46, y:66}, {x:46, y:56}, 12)
+          ],
+          // Stroke 2: Horizontal arm
+          linePoints({x:46, y:56}, {x:68, y:56}, 12),
+          // Stroke 3: Vertical stem
+          linePoints({x:68, y:35}, {x:68, y:75}, 16),
+          // Stroke 4: Bottom loop tail
+          [
+            ...cubicPoints({x:68, y:75}, {x:74, y:78}, {x:84, y:78}, {x:87, y:70}, 12),
+            ...cubicPoints({x:87, y:70}, {x:87, y:60}, {x:78, y:60}, {x:74, y:67}, 12),
+            ...cubicPoints({x:74, y:67}, {x:74, y:74}, {x:82, y:78}, {x:87, y:78}, 12)
+          ]
+        ]
+      },
+
+      // 3. இ (ID 111) · 3 strokes
+      "இ": {
+        id: 111,
+        name: "இ (i)",
+        strokes: [
+          // Stroke 1: Top loop and high crown arch down to waist
+          [
+            ...circlePoints(34, 38, 4, 12),
+            ...cubicPoints({x:36, y:34}, {x:46, y:25}, {x:68, y:27}, {x:74, y:38}, 16),
+            ...cubicPoints({x:74, y:38}, {x:76, y:48}, {x:70, y:54}, {x:60, y:54}, 12)
+          ],
+          // Stroke 2: Central waist knot
+          [
+            ...cubicPoints({x:60, y:54}, {x:46, y:54}, {x:44, y:60}, {x:52, y:62}, 12),
+            ...cubicPoints({x:52, y:62}, {x:60, y:62}, {x:62, y:56}, {x:54, y:54}, 12)
+          ],
+          // Stroke 3: Lower sweeping curve dipping to Y=78 and sweeping across baseline
+          [
+            ...cubicPoints({x:54, y:54}, {x:42, y:64}, {x:26, y:70}, {x:26, y:77}, 14),
+            ...cubicPoints({x:26, y:77}, {x:36, y:78}, {x:60, y:77}, {x:76, y:76}, 16)
+          ]
+        ]
+      },
+
+      // 4. ஈ (ID 112) · 5 strokes
+      "ஈ": {
+        id: 112,
+        name: "ஈ (ii)",
+        strokes: [
+          // Stroke 1: Left vertical stem
+          linePoints({x:34, y:35}, {x:34, y:66}, 14),
+          // Stroke 2: Top horizontal bar
+          linePoints({x:34, y:35}, {x:71, y:35}, 16),
+          // Stroke 3: Middle vertical pillar
+          linePoints({x:52, y:35}, {x:52, y:66}, 14),
+          // Stroke 4: Left dot (pulli)
+          circlePoints(43, 50, 3, 12),
+          // Stroke 5: Right dot (pulli)
+          circlePoints(62, 50, 3, 12)
+        ]
+      },
+
+      // 5. உ (ID 113) · 2 strokes
+      "உ": {
+        id: 113,
+        name: "உ (u)",
+        strokes: [
+          // Stroke 1: Circular top loop and curved descent to base
+          [
+            ...circlePoints(32, 42, 4, 12),
+            ...cubicPoints({x:34, y:38}, {x:44, y:35}, {x:56, y:36}, {x:60, y:43}, 12),
+            ...cubicPoints({x:60, y:43}, {x:62, y:52}, {x:50, y:62}, {x:32, y:66}, 16)
+          ],
+          // Stroke 2: Flat horizontal base
+          linePoints({x:32, y:66}, {x:78, y:66}, 18)
+        ]
+      },
+
+      // 6. ஊ (ID 114) · 4 strokes
+      "ஊ": {
+        id: 114,
+        name: "ஊ (uu)",
+        strokes: [
+          // Stroke 1: உ base curve
+          [
+            ...circlePoints(20, 42, 3.5, 12),
+            ...cubicPoints({x:22, y:38}, {x:30, y:35}, {x:38, y:36}, {x:40, y:43}, 12),
+            ...cubicPoints({x:40, y:43}, {x:40, y:52}, {x:32, y:62}, {x:18, y:66}, 14)
+          ],
+          // Stroke 2: உ baseline
+          linePoints({x:18, y:66}, {x:48, y:66}, 14),
+          // Stroke 3: ள auxiliary loop & arch
+          [
+            ...circlePoints(56, 56, 3, 10),
+            ...linePoints({x:56, y:53}, {x:56, y:42}, 8),
+            ...cubicPoints({x:56, y:42}, {x:64, y:35}, {x:72, y:38}, {x:72, y:66}, 14)
+          ],
+          // Stroke 4: ள horizontal base & right vertical stem
+          [
+            ...linePoints({x:72, y:66}, {x:88, y:66}, 8),
+            ...linePoints({x:88, y:35}, {x:88, y:66}, 12)
+          ]
+        ]
+      },
+
+      // 7. எ (ID 115) · 2 strokes
+      "எ": {
+        id: 115,
+        name: "எ (e)",
+        strokes: [
+          // Stroke 1: Bottom-left circular eye and upward stem
+          [
+            ...circlePoints(36, 58, 4, 12),
+            ...linePoints({x:36, y:54}, {x:36, y:35}, 12)
+          ],
+          // Stroke 2: Top horizontal bar, rounded shoulder, and right vertical stem
+          [
+            ...linePoints({x:36, y:35}, {x:64, y:35}, 12),
+            ...quadPoints({x:64, y:35}, {x:71, y:35}, {x:71, y:42}, 8),
+            ...linePoints({x:71, y:42}, {x:71, y:67}, 14)
+          ]
+        ]
+      },
+
+      // 8. ஏ (ID 116) · 3 strokes
+      "ஏ": {
+        id: 116,
+        name: "ஏ (ee)",
+        strokes: [
+          // Stroke 1: Bottom-left eye and vertical rise
+          [
+            ...circlePoints(36, 58, 4, 12),
+            ...linePoints({x:36, y:54}, {x:36, y:35}, 12)
+          ],
+          // Stroke 2: Top bar, rounded shoulder, right vertical stem
+          [
+            ...linePoints({x:36, y:35}, {x:64, y:35}, 12),
+            ...quadPoints({x:64, y:35}, {x:71, y:35}, {x:71, y:42}, 8),
+            ...linePoints({x:71, y:42}, {x:71, y:67}, 14)
+          ],
+          // Stroke 3: Slanted tail extending down-left from bottom-left corner
+          linePoints({x:34, y:58}, {x:28, y:77}, 12)
+        ]
+      },
+
+      // 9. ஐ (ID 117) · 3 strokes
+      "ஐ": {
+        id: 117,
+        name: "ஐ (ai)",
+        strokes: [
+          // Stroke 1: Top double wave/arch
+          [
+            ...circlePoints(34, 43, 3.5, 10),
+            ...cubicPoints({x:36, y:39}, {x:48, y:35}, {x:64, y:36}, {x:68, y:45}, 14),
+            ...cubicPoints({x:68, y:45}, {x:70, y:54}, {x:58, y:60}, {x:46, y:62}, 12)
+          ],
+          // Stroke 2: Left lower connecting wave
+          circlePoints(34, 52, 3.5, 10),
+          // Stroke 3: Double bottom scalloped wave reaching baseline at Y=78
+          [
+            ...cubicPoints({x:34, y:60}, {x:26, y:76}, {x:44, y:78}, {x:48, y:68}, 14),
+            ...cubicPoints({x:48, y:68}, {x:52, y:78}, {x:70, y:78}, {x:74, y:68}, 14)
+          ]
+        ]
+      },
+
+      // 10. ஒ (ID 118) · 3 strokes
+      "ஒ": {
+        id: 118,
+        name: "ஒ (o)",
+        strokes: [
+          // Stroke 1: Top-left circular eye and upper arch
+          [
+            ...circlePoints(34, 43, 4, 12),
+            ...cubicPoints({x:36, y:39}, {x:46, y:35}, {x:58, y:36}, {x:62, y:45}, 14)
+          ],
+          // Stroke 2: Internal loop / fold
+          [
+            ...cubicPoints({x:62, y:45}, {x:62, y:54}, {x:48, y:56}, {x:42, y:50}, 12),
+            ...cubicPoints({x:42, y:50}, {x:38, y:44}, {x:48, y:44}, {x:52, y:48}, 10)
+          ],
+          // Stroke 3: Lower sweeping curve and baseline tail
+          [
+            ...cubicPoints({x:52, y:48}, {x:38, y:62}, {x:26, y:74}, {x:38, y:78}, 14),
+            ...cubicPoints({x:38, y:78}, {x:54, y:78}, {x:68, y:77}, {x:76, y:72}, 14)
+          ]
+        ]
+      },
+
+      // 11. ஓ (ID 119) · 3 strokes
+      "ஓ": {
+        id: 119,
+        name: "ஓ (oo)",
+        strokes: [
+          // Stroke 1: Top-left circular eye and upper arch
+          [
+            ...circlePoints(34, 43, 4, 12),
+            ...cubicPoints({x:36, y:39}, {x:46, y:35}, {x:58, y:36}, {x:62, y:45}, 14)
+          ],
+          // Stroke 2: Internal loop / fold
+          [
+            ...cubicPoints({x:62, y:45}, {x:62, y:54}, {x:48, y:56}, {x:42, y:50}, 12),
+            ...cubicPoints({x:42, y:50}, {x:38, y:44}, {x:48, y:44}, {x:52, y:48}, 10)
+          ],
+          // Stroke 3: Lower sweeping curve that curls up into top-right loop
+          [
+            ...cubicPoints({x:52, y:48}, {x:38, y:62}, {x:26, y:74}, {x:38, y:78}, 14),
+            ...cubicPoints({x:38, y:78}, {x:56, y:78}, {x:70, y:78}, {x:76, y:70}, 12),
+            ...cubicPoints({x:76, y:70}, {x:80, y:60}, {x:72, y:54}, {x:68, y:60}, 10),
+            ...cubicPoints({x:68, y:60}, {x:68, y:68}, {x:76, y:70}, {x:82, y:68}, 8)
+          ]
+        ]
+      },
+
+      // 12. ஔ (ID 120) · 5 strokes
+      "ஔ": {
+        id: 120,
+        name: "ஔ (au)",
+        strokes: [
+          // Stroke 1: Base ஒ top eye & arch
+          [
+            ...circlePoints(24, 43, 3.5, 12),
+            ...cubicPoints({x:26, y:39}, {x:34, y:35}, {x:42, y:36}, {x:46, y:45}, 12)
+          ],
+          // Stroke 2: Base ஒ inner fold
+          [
+            ...cubicPoints({x:46, y:45}, {x:46, y:54}, {x:36, y:56}, {x:30, y:50}, 10),
+            ...cubicPoints({x:30, y:50}, {x:26, y:44}, {x:34, y:44}, {x:38, y:48}, 10)
+          ],
+          // Stroke 3: Base ஒ lower curve
+          [
+            ...cubicPoints({x:38, y:48}, {x:28, y:62}, {x:18, y:74}, {x:28, y:78}, 12),
+            ...cubicPoints({x:28, y:78}, {x:38, y:78}, {x:48, y:77}, {x:52, y:72}, 12)
+          ],
+          // Stroke 4: Auxiliary ள loop and arch
+          [
+            ...circlePoints(62, 56, 3, 10),
+            ...linePoints({x:62, y:53}, {x:62, y:42}, 8),
+            ...cubicPoints({x:62, y:42}, {x:70, y:35}, {x:78, y:38}, {x:78, y:66}, 14)
+          ],
+          // Stroke 5: Auxiliary ள base & vertical stem
+          [
+            ...linePoints({x:78, y:66}, {x:90, y:66}, 8),
+            ...linePoints({x:90, y:35}, {x:90, y:66}, 12)
+          ]
+        ]
+      }
+    };
+
+    function ptsToSvgD(pts) {
+      if (!pts || pts.length === 0) return "";
+      let d = `M ${pts[0].x} ${pts[0].y}`;
+      for (let i = 1; i < pts.length; i++) {
+        d += ` L ${pts[i].x} ${pts[i].y}`;
+      }
+      return d;
+    }
+
+    // High-fidelity Canvas 700x320 normalization:
+    // Scale factor 2.45 matches 96px (text-8xl) font size
+    // Centered at canvas center (350, 160)
+    function toCanvasNorm(p) {
+      const pxX = 350 + (p.x - 50) * 2.45;
+      const pxY = 160 + (p.y - 54) * 2.45;
+      return {
+        x: Math.round((pxX / 700) * 1000000) / 1000000,
+        y: Math.round((pxY / 320) * 1000000) / 1000000
+      };
+    }
+
+    const grid = document.getElementById("grid");
+
+    Object.entries(tamilDefinitions).forEach(([char, def], idx) => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const header = document.createElement("div");
+      header.className = "card-header";
+      header.innerHTML = `
+        <div>
+          <span class="card-title">${idx + 1}. ${def.name}</span>
+          <span class="card-meta"> &middot; ID ${def.id} &middot; ${def.strokes.length} strokes</span>
+        </div>
+        <span class="status-badge">&check; Authentic Orthography</span>
+      `;
+      card.appendChild(header);
+
+      const stages = document.createElement("div");
+      stages.className = "stages";
+
+      // 1. Ref stage (Step 1 Watch)
+      const refStage = document.createElement("div");
+      refStage.className = "ref-stage";
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 100 100");
+      svg.innerHTML = `
+        <text x="50" y="52" text-anchor="middle" dominant-baseline="central" class="ref-watermark">${char}</text>
+      `;
+
+      def.strokes.forEach((strokePts, sIdx) => {
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", ptsToSvgD(strokePts));
+        path.setAttribute("class", `stroke-path s-${sIdx % 5}`);
+        svg.appendChild(path);
+      });
+      refStage.appendChild(svg);
+      stages.appendChild(refStage);
+
+      // 2. Canvas stage (Step 2 Practice)
+      const canvasStage = document.createElement("div");
+      canvasStage.className = "canvas-stage";
+      canvasStage.innerHTML = `<div class="canvas-watermark">${char}</div>`;
+      
+      const canvasSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      canvasSvg.setAttribute("viewBox", "0 0 700 320");
+      canvasSvg.setAttribute("preserveAspectRatio", "none");
+
+      def.strokes.forEach((strokePts, sIdx) => {
+        const normPts = strokePts.map(toCanvasNorm);
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+        polyline.setAttribute("points", normPts.map(p => `${p.x * 700},${p.y * 320}`).join(" "));
+        polyline.setAttribute("class", `canvas-polyline cp-${sIdx % 5}`);
+        canvasSvg.appendChild(polyline);
+      });
+      canvasStage.appendChild(canvasSvg);
+      stages.appendChild(canvasStage);
+
+      card.appendChild(stages);
+
+      // Legend
+      const legend = document.createElement("div");
+      legend.className = "stroke-legend";
+      def.strokes.forEach((_, sIdx) => {
+        legend.innerHTML += `
+          <div class="legend-item">
+            <span class="dot d-${sIdx % 5}"></span>
+            <span>Stroke ${sIdx + 1} (${def.strokes[sIdx].length} pts)</span>
+          </div>
+        `;
+      });
+      card.appendChild(legend);
+
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>

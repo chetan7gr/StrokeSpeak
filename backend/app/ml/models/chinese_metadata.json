@@ -1,0 +1,513 @@
+{
+  "model_name": "StrokeSpeak Simplified Chinese CNN",
+  "version": "1.0.0",
+  "script_code": "zh-hans",
+  "language": "Simplified Chinese",
+  "model_file": "chinese_v1.pt",
+  "weights_file": "chinese_weights.pt",
+  "architecture": "LeNet-style 3-Stage ConvNet (Conv-BN-ReLU-MaxPool x3 + FC128 + FC9)",
+  "input_dimensions": [
+    1,
+    1,
+    32,
+    32
+  ],
+  "classes": [
+    "一",
+    "二",
+    "三",
+    "人",
+    "大",
+    "口",
+    "日",
+    "月",
+    "山"
+  ],
+  "class_prefixes": [
+    "char_YI",
+    "char_ER",
+    "char_SAN",
+    "char_REN",
+    "char_DA",
+    "char_KOU",
+    "char_RI",
+    "char_YUE",
+    "char_SHAN"
+  ],
+  "num_classes": 9,
+  "preprocessing": {
+    "grayscale": true,
+    "invert_if_light_bg": true,
+    "otsu_thresholding": true,
+    "aspect_ratio_preserving_crop_and_pad": true,
+    "interpolation": "cv2.INTER_AREA",
+    "normalization": "float32 [0.0, 1.0]",
+    "target_size": 32
+  },
+  "dataset": {
+    "provenance": "SYNTHETIC (Procedural Vector Motor Simulation)",
+    "license": "Internal StrokeSpeak Project Asset",
+    "base_samples_per_class": 20,
+    "total_base_images": 180,
+    "train_samples": 1260,
+    "val_samples": 27,
+    "test_samples": 27,
+    "per_class_summary": {
+      "一": {
+        "folder": "char_YI",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "二": {
+        "folder": "char_ER",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "三": {
+        "folder": "char_SAN",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "人": {
+        "folder": "char_REN",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "大": {
+        "folder": "char_DA",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "口": {
+        "folder": "char_KOU",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "日": {
+        "folder": "char_RI",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "月": {
+        "folder": "char_YUE",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "山": {
+        "folder": "char_SHAN",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      }
+    }
+  },
+  "metrics": {
+    "benchmark_type": "Synthetic-Data Benchmark Results (Tier 1 Held-Out Test Split)",
+    "evaluation_scope": "Held-out unaugmented synthetic motor simulations; does not represent unconstrained human handwriting.",
+    "total_test_samples": 27,
+    "correct_predictions": 27,
+    "accuracy": 1.0,
+    "accuracy_pct": 100.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "macro_f1_pct": 100.0,
+    "per_class": {
+      "一": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "二": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "三": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "人": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "大": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "口": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "日": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "月": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "山": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ]
+  },
+  "training_duration_seconds": 8.63,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.5072,
+      "train_acc": 0.8635,
+      "val_loss": 0.0274,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.0122,
+      "train_acc": 1.0,
+      "val_loss": 0.0003,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.0045,
+      "train_acc": 1.0,
+      "val_loss": 0.0002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0028,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.0015,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.0014,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.001,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.0008,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.0007,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.0006,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.0006,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0002,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.0002,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.0002,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.0002,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.0002,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.0002,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.0002,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    }
+  ]
+}

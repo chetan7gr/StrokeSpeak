@@ -1,0 +1,31 @@
+{
+  "status": "success",
+  "script_code": "ta",
+  "language": "Tamil",
+  "predicted_character": "அ",
+  "confidence": 49.88,
+  "confidence_level": "moderate",
+  "is_reliable": true,
+  "expected_character": "ஈ",
+  "is_match": false,
+  "top_predictions": [
+    {
+      "character": "அ",
+      "confidence": 49.88
+    },
+    {
+      "character": "ஈ",
+      "confidence": 39.47
+    },
+    {
+      "character": "ஆ",
+      "confidence": 7.47
+    }
+  ],
+  "inference_time_ms": 3.62,
+  "model_name": "StrokeSpeak Tamil CNN",
+  "model_version": "1.0.0",
+  "device": "CPU",
+  "inference_runtime": "torchscript_cpu",
+  "message": "CNN recognized your drawing as 'அ' (49.88%), not 'ஈ'. Compare stroke proportions, loop closure, and stroke placement against the reference guide."
+}

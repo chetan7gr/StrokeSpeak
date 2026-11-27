@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StrokeSpeak · Developer Stroke Capture</title>
+<style>
+:root{font-family:"Segoe UI",Arial,sans-serif;color:#172033;background:#f4f6fb}*{box-sizing:border-box}body{margin:0;padding:20px}main{max-width:1160px;margin:auto}
+h1{font-size:clamp(1.4rem,3vw,2rem);margin:0}h2{font-size:1.05rem;margin:0 0 9px}p{line-height:1.45}.badge{display:inline-block;background:#d8f6e9;color:#075e48;border-radius:20px;padding:6px 10px;font-size:.8rem;font-weight:700;margin-bottom:10px}
+.intro{color:#58657b;max-width:850px}.notice{border:1px solid #f0d18a;background:#fff8e8;color:#664b13;border-radius:10px;padding:12px;margin:14px 0}
+.card{background:#fff;border:1px solid #e1e6ef;border-radius:14px;padding:15px;margin:14px 0;box-shadow:0 3px 10px #1720330a}.toolbar,.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:end}.field{flex:1 1 220px;min-width:180px}
+label{display:block;font-size:.86rem;font-weight:650;margin-bottom:5px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:9px 10px;border:1px solid #cbd4e2;border-radius:8px;background:white;color:#172033}select:disabled{background:#edf0f5}
+.target{display:flex;align-items:center;gap:12px;margin-top:15px}.glyph{font-size:2.5rem;color:#4338ca;font-family:"Noto Sans Devanagari","Noto Sans Tamil",sans-serif}
+.workspace{display:grid;grid-template-columns:1fr 1fr;gap:14px}.draw-area{position:relative;aspect-ratio:1;container-type:inline-size;background-color:#fbfcff;border:1px solid #dce3ef;border-radius:12px;overflow:hidden;background-image:linear-gradient(#e8edf6 1px,transparent 1px),linear-gradient(90deg,#e8edf6 1px,transparent 1px);background-size:10% 10%}
+.draw-area:before,.draw-area:after{content:"";position:absolute;pointer-events:none;background:#bdc9df;opacity:.65}.draw-area:before{width:1px;height:100%;left:50%}.draw-area:after{height:1px;width:100%;top:50%}
+#watermark{position:absolute;inset:0;display:grid;place-items:center;color:#bbc5d8;opacity:.34;font-size:min(60vw,240px);font-size:60cqi;line-height:1;font-family:"Noto Sans Devanagari","Noto Sans Tamil",sans-serif;pointer-events:none}
+#drawCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;z-index:2}
+#candidateOverlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+#watermark{z-index:1}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.compare-pane{border:1px solid #dce3ef;border-radius:10px;padding:12px;min-width:0}
+.compare-svg{width:100%;aspect-ratio:1;background:#fbfcff;border:1px solid #dce3ef;border-radius:8px;display:block}
+.ref-status{display:inline-block;border-radius:16px;padding:4px 8px;font-size:.75rem;font-weight:700;background:#fff1d6;color:#744d00}
+.stroke-list{margin:7px 0 0;padding-left:22px;font-size:.8rem;color:#526078}.stroke-list li{margin:3px 0}
+.source-preview{margin-top:9px;max-height:320px;width:100%;object-fit:contain;background:#f4f6fb;border:1px solid #dce3ef;border-radius:8px}
+@media(max-width:760px){.compare-grid{grid-template-columns:1fr}}
+#preview{width:100%;aspect-ratio:1;max-height:520px;background:#fbfcff;border:1px solid #dce3ef;border-radius:12px}
+.hint,.small{color:#667085;font-size:.84rem}.hint{min-height:1.4em}button{padding:9px 12px;border:1px solid #cbd4e2;border-radius:8px;background:#fff;cursor:pointer}button:disabled{opacity:.48;cursor:not-allowed}.primary{background:#4b3fe0;color:#fff;border-color:#4034d4;font-weight:700}.danger{color:#9d2525}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.wide{grid-column:1/-1}.review{padding:10px;background:#fff8e8;color:#664b13;border:1px solid #f0d18a;border-radius:8px;font-weight:700}.check{display:flex;gap:8px;align-items:flex-start;margin:12px 0}.check input{width:auto;margin-top:4px}.status{min-height:1.2em}
+@media(max-width:760px){body{padding:11px}.workspace,.form-grid{grid-template-columns:1fr}.wide{grid-column:auto}}
+</style></head><body><main>
+<span class="badge">Developer-only · local Vite tool · not linked from learner screens</span>
+<h1>Stroke reference capture</h1>
+<p class="intro">Capture a sequence from a cited teaching reference for one of the 16 unresolved Sanskrit or Tamil CNN characters. Trace a real reference. This utility does not invent strokes.</p>
+<div class="notice"><b>Pending review only.</b> The page makes GET requests and downloads JSON. It never writes to MySQL. Every capture remains pending instructor review; the staging pipeline rejects targets outside the blocked list and protects source-backed characters.</div>
+<section class="card"><div class="toolbar">
+<div class="field"><label for="language">Language</label><select id="language"><option value="">Loading…</option></select></div>
+<div class="field"><label for="character">Blocked character from database</label><select id="character" disabled><option>Choose a language first</option></select></div>
+<button id="reload" type="button">Reload from API</button></div>
+<div class="target"><span id="glyph" class="glyph">—</span><div><b id="heading">Select a character</b><div id="meta" class="small">Characters load from the existing API.</div></div></div>
+<p class="small">Selectable only: Sanskrit आ ई ऐ ओ औ; Tamil ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ. Japanese, Chinese, and completed Tamil अ are excluded.</p></section>
+<div class="workspace">
+<section class="card"><h2>1 · Trace the cited teaching reference</h2><div class="draw-area" id="drawArea"><div id="watermark">—</div><canvas id="drawCanvas" aria-label="Draw with mouse or touch"></canvas><svg id="candidateOverlay" viewBox="0 0 1 1" aria-hidden="true"></svg></div>
+<p id="count" class="hint">Select a character, then draw one continuous stroke at a time.</p>
+<div class="actions"><button id="undo" type="button" disabled>Undo last stroke</button><button id="reset" class="danger" type="button" disabled>Reset</button><button id="replay" type="button" disabled>Replay</button></div><label class="check"><input id="overlayCandidate" type="checkbox"><span>Overlay proposed candidate on the drawing watermark</span></label><button id="scorePreview" type="button" disabled>Dry-run drawing against candidate</button><p id="scoreResult" class="small" role="status" aria-live="polite">No score preview run. This will not save an attempt.</p></section>
+<section class="card"><h2>2 · Captured stroke preview</h2><svg id="preview" viewBox="0 0 100 100" role="img" aria-label="Captured stroke preview"></svg><p class="hint">Colors and numbers show order; arrowheads show direction. SVG paths and normalized point data use the same captured points.</p></section>
+</div>
+<section class="card"><h2>3 · Existing database reference vs proposed candidate</h2>
+<p class="small">The saved reference is read-only. Candidate JSON is opened in this browser only. Both previews show numbered strokes, start dots, direction arrows, and pen-up boundaries.</p>
+<div class="form-grid">
+<div class="field"><label for="candidateFile">Open a pending candidate JSON</label><input id="candidateFile" type="file" accept=".json,application/json"><p class="small">Choose a capture-inbox JSON for the selected character. Nothing is uploaded or saved to the database.</p></div>
+<div class="field"><label for="sourceMedia">Open its original instructional reference (cached image, GIF or video)</label><input id="sourceMedia" type="file" accept="image/*,video/*"><p class="small">Local-only preview. You can also open the linked source recorded in candidate metadata.</p></div>
+<div class="field"><label for="stagedCandidateSelect">Pending candidate already in the capture inbox</label><div class="actions"><button id="findStagedCandidates" type="button">Find candidates for this character</button><select id="stagedCandidateSelect" disabled><option>No candidates loaded</option></select></div><p id="stagedCandidateStatus" class="small">A developer login is required to find staged candidates.</p></div>
+</div>
+<div class="compare-grid">
+<div class="compare-pane"><h3>Existing saved reference <span id="existingStatus" class="ref-status">Not loaded</span></h3><svg id="existingPreview" class="compare-svg" viewBox="0 0 1 1" role="img" aria-label="Existing saved stroke reference"></svg>
+<div class="actions"><div class="field"><label for="existingStrokeSelect">Individual stroke</label><select id="existingStrokeSelect" disabled></select></div><button id="existingPlayStroke" type="button" disabled>Play stroke</button><button id="existingPlayAll" type="button" disabled>Play all</button></div>
+<ol id="existingStrokeList" class="stroke-list"></ol><p id="existingSource" class="small">Reference source information will appear here.</p></div>
+<div class="compare-pane"><h3>Proposed candidate <span id="candidateStatus" class="ref-status">No candidate loaded</span></h3><svg id="candidatePreview" class="compare-svg" viewBox="0 0 1 1" role="img" aria-label="Proposed candidate stroke reference"></svg>
+<div class="actions"><div class="field"><label for="candidateStrokeSelect">Individual stroke</label><select id="candidateStrokeSelect" disabled></select></div><button id="candidatePlayStroke" type="button" disabled>Play stroke</button><button id="candidatePlayAll" type="button" disabled>Play all</button></div>
+<ol id="candidateStrokeList" class="stroke-list"></ol><p id="candidateSource" class="small">Load pending candidate JSON or draw a proposed candidate.</p><div id="sourceMediaContainer"></div></div></div>
+<p id="compareStatus" class="status" role="status" aria-live="polite">Choose a character to load its saved reference.</p></section>
+<section class="card"><h2>4 · Capture source information</h2><div class="form-grid">
+<div class="field"><label for="sourceTitle">Teaching source title</label><input id="sourceTitle" placeholder="Textbook, institution lesson, or reference"></div>
+<div class="field"><label for="sourceUrl">Source URL (HTTPS)</label><input id="sourceUrl" type="url" placeholder="https://…"></div>
+<div class="field"><label for="attribution">Creator / attribution</label><input id="attribution" placeholder="Author, institution, or rights holder"></div>
+<div class="field"><label for="license">License / permission</label><input id="license" placeholder="License name or written permission"></div>
+<div class="field"><label for="licenseUrl">License URL (optional)</label><input id="licenseUrl" type="url" placeholder="https://…"></div>
+<div class="field"><label for="capturedBy">Captured by</label><input id="capturedBy" placeholder="Developer or instructor name"></div>
+<div class="field wide"><label for="notes">Instructor review note (optional)</label><textarea id="notes" rows="2" placeholder="The status remains pending until reviewed separately."></textarea></div>
+<div class="field wide review">Instructor review status: PENDING. This utility cannot mark a capture approved.</div></div>
+<label class="check"><input id="sourceConfirmed" type="checkbox"><span>I traced the sequence from the cited source and did not invent or infer strokes.</span></label>
+<div class="actions"><button id="export" class="primary" type="button" disabled>Export pending-review JSON</button><span class="small">Copy the download into backend\data\reference_strokes\capture-inbox, then rerun the staging script.</span></div>
+<p id="status" class="status" role="status" aria-live="polite">Connecting to API…</p></section>
+<p class="small">This page is outside the React learner app and will not be copied into the production build.</p></main>
+<script type="module">
+const API='/api/v1';
+const BLOCKED={'sa-devanagari':['आ','ई','ऐ','ओ','औ'],ta:['ஆ','இ','ஈ','உ','ஊ','எ','ஏ','ஐ','ஒ','ஓ','ஔ']};
+const COLORS=['#4338ca','#059669','#ea580c','#2563eb','#9333ea','#0891b2','#be123c','#65a30d'];
+const $=id=>document.getElementById(id), lang=$('language'), char=$('character'), canvas=$('drawCanvas'), ctx=canvas.getContext('2d');
+let languages=[], chars=[], target=null, strokes=[], active=null, startTime=null, replayToken=0;
+let currentReference=null,candidateData=null,sourceObjectUrl=null,referenceRequestToken=0,stagedCandidates=[];
+function say(text,error=false){$('status').textContent=text;$('status').style.color=error?'#a32222':'#334155';}
+function update(){
+  const ready=['sourceTitle','sourceUrl','attribution','license','capturedBy'].every(id=>$(id).value.trim());
+  const complete=strokes.length>0&&strokes.every(s=>s.length>1);
+  $('undo').disabled=!target||!strokes.length||!!active;$('reset').disabled=!target||!strokes.length;$('replay').disabled=!target||!strokes.length||!!active;
+  $('export').disabled=!target||!complete||!ready||!$('sourceConfirmed').checked||!!active;
+  $('count').textContent=target?strokes.length+' stroke(s) · '+strokes.reduce((n,s)=>n+s.length,0)+' points. Lift between strokes.':'Select a character, then draw one continuous stroke at a time.';
+  $('scorePreview').disabled=!target||!strokes.length||!candidatePointStrokes().length;
+  updateCandidateOverlay();
+}
+function draw(limit=strokes.length,pointLimit=Number.MAX_SAFE_INTEGER){
+  const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;ctx.clearRect(0,0,r.width,r.height);
+  strokes.slice(0,limit).forEach((s,i)=>{const p=i===limit-1?s.slice(0,pointLimit):s;if(!p.length)return;ctx.beginPath();ctx.moveTo(p[0].x*r.width,p[0].y*r.height);p.slice(1).forEach(q=>ctx.lineTo(q.x*r.width,q.y*r.height));ctx.strokeStyle='#20283a';ctx.lineWidth=Math.max(3,r.width*.038);ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();});
+  if(active&&active.length){ctx.beginPath();ctx.moveTo(active[0].x*r.width,active[0].y*r.height);active.slice(1).forEach(q=>ctx.lineTo(q.x*r.width,q.y*r.height));ctx.strokeStyle='#20283a';ctx.lineWidth=Math.max(3,r.width*.038);ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();}
+}
+function sizeCanvas(){const r=canvas.getBoundingClientRect();if(!r.width)return;const d=window.devicePixelRatio||1;canvas.width=Math.round(r.width*d);canvas.height=Math.round(r.height*d);ctx.setTransform(d,0,0,d,0,0);draw();}
+function resetCapture(){replayToken++;strokes=[];active=null;startTime=null;draw();preview();update();renderComparison();$('scoreResult').textContent='No score preview run. This will not save an attempt.';}
+function point(event){const r=canvas.getBoundingClientRect();return{x:Math.max(0,Math.min(1,(event.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(event.clientY-r.top)/r.height)),time:Math.round(performance.now()-startTime)};}
+function dPath(s){return s.map((p,i)=>(i?'L':'M')+' '+(p.x*100).toFixed(2)+' '+(p.y*100).toFixed(2)).join(' ');}
+function preview(){
+  const svg=$('preview');while(svg.firstChild)svg.removeChild(svg.firstChild);const ns='http://www.w3.org/2000/svg';
+  const defs=document.createElementNS(ns,'defs'),m=document.createElementNS(ns,'marker'),a=document.createElementNS(ns,'path');m.setAttribute('id','cap-arrow');m.setAttribute('markerWidth','4');m.setAttribute('markerHeight','4');m.setAttribute('refX','3');m.setAttribute('refY','2');m.setAttribute('orient','auto');m.setAttribute('markerUnits','strokeWidth');a.setAttribute('d','M0,0 L4,2 L0,4 z');a.setAttribute('fill','#334155');m.appendChild(a);defs.appendChild(m);svg.appendChild(defs);
+  const w=document.createElementNS(ns,'text');w.setAttribute('x','50');w.setAttribute('y','57');w.setAttribute('text-anchor','middle');w.setAttribute('dominant-baseline','middle');w.setAttribute('font-size','62');w.setAttribute('fill','#bbc5d8');w.setAttribute('opacity','.32');w.textContent=target?target.character_text:'—';svg.appendChild(w);
+  strokes.forEach((s,i)=>{if(s.length<2)return;const p=document.createElementNS(ns,'path');p.setAttribute('d',dPath(s));p.setAttribute('fill','none');p.setAttribute('stroke',COLORS[i%COLORS.length]);p.setAttribute('stroke-width','2.7');p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round');p.setAttribute('marker-end','url(#cap-arrow)');p.dataset.captureStroke=String(i+1);svg.appendChild(p);
+    const t=document.createElementNS(ns,'text');t.setAttribute('x',String(s[0].x*100));t.setAttribute('y',String(s[0].y*100));t.setAttribute('font-size','5');t.setAttribute('font-weight','bold');t.setAttribute('text-anchor','middle');t.textContent=String(i+1);svg.appendChild(t);});
+}
+function animatePreview(){preview();[...$('preview').querySelectorAll('[data-capture-stroke]')].forEach((p,i)=>{const n=p.getTotalLength();p.style.strokeDasharray=String(n);p.style.strokeDashoffset=String(n);requestAnimationFrame(()=>{p.style.transition='stroke-dashoffset '+Math.max(.25,Math.min(1,n/180))+'s linear '+(i*.25)+'s';p.style.strokeDashoffset='0';});});}
+async function replay(){if(!strokes.length)return;replayToken++;const token=replayToken;animatePreview();draw(0,0);for(let i=0;i<strokes.length;i++){for(let n=2;n<=strokes[i].length;n++){if(token!==replayToken)return;draw(i+1,n);await new Promise(r=>setTimeout(r,12));}await new Promise(r=>setTimeout(r,40));}draw();}
+function normalized(){return strokes.map(s=>s.map(p=>({x:Number(p.x.toFixed(6)),y:Number(p.y.toFixed(6)),time:p.time})));}
+function paths(points){return points.map((s,i)=>({order:i+1,path_id:'s'+(i+1),d:'M '+s.map(p=>(p.x*100).toFixed(2)+' '+(p.y*100).toFixed(2)).join(' L ')}));}
+function exportJson(){
+  if(!target||active||strokes.some(s=>s.length<2)){say('Finish every stroke before exporting.',true);return;}
+  let url;try{url=new URL($('sourceUrl').value.trim());if(url.protocol!=='https:')throw Error();}catch{say('Enter a valid HTTPS source URL.',true);return;}
+  const pts=normalized(),source={title:$('sourceTitle').value.trim(),url:url.href,attribution:$('attribution').value.trim(),license:$('license').value.trim(),license_url:$('licenseUrl').value.trim()},stamp=new Date().toISOString();
+  const c={schema_version:1,capture_id:globalThis.crypto?.randomUUID?.()||('capture-'+Date.now()),captured_at_utc:stamp,character_id:target.id,script_code:lang.value,character:target.character_text,origin:'StrokeSpeak developer capture utility',candidate_status:'captured_pending_review',stroke_count:pts.length,point_count:pts.reduce((n,s)=>n+s.length,0),points:pts,source,captured_by:$('capturedBy').value.trim(),instructor_review:{status:'pending',reviewer:'',reviewed_at_utc:'',notes:$('notes').value.trim()},svg:{source:source.title,source_url:source.url,attribution:source.attribution,license:source.license,license_url:source.license_url,provenance_status:'captured_pending_review',instructor_review_status:'pending',viewBox:'0 0 100 100',stroke_count:pts.length,strokes:paths(pts)}};
+  const blob=new Blob([JSON.stringify(c,null,2)],{type:'application/json'}),fileUrl=URL.createObjectURL(blob),link=document.createElement('a');link.href=fileUrl;link.download='strokespeak-capture-'+c.script_code+'-'+target.id+'-'+Date.now()+'.json';link.click();URL.revokeObjectURL(fileUrl);say('Pending-review JSON downloaded. Copy it into capture-inbox, then rerun the staging script.');
+}
+function pointArray(stroke){return (Array.isArray(stroke)?stroke:[]).map(p=>({x:Number(p.x),y:Number(p.y),time:Number.isFinite(Number(p.time))?Math.round(Number(p.time)):0})).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));}
+function candidatePointStrokes(){if(candidateData){const a=candidateData.points||candidateData.stroke_data||candidateData.strokeData||[];return a.map(pointArray).filter(s=>s.length>0);}return strokes.map(pointArray).filter(s=>s.length>0);}
+function refPointStrokes(){return (currentReference?.stroke_data||[]).map(pointArray).filter(s=>s.length>0);}
+function scaledPoints(input,meta){
+ const pts=input.flat();if(!pts.length)return [];const max=Math.max(...pts.map(p=>Math.max(Math.abs(p.x),Math.abs(p.y))));if(max<=1.01)return input;
+ const vb=String(meta?.viewBox||'').trim().split(/[ ,]+/).map(Number);if(vb.length===4&&vb[2]>0&&vb[3]>0)return input.map(s=>s.map(p=>({x:(p.x-vb[0])/vb[2],y:(p.y-vb[1])/vb[3],time:p.time})));
+ const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x)),minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y)),span=Math.max(maxX-minX,maxY-minY,1e-6),pad=.1,side=.8,offX=(side-(maxX-minX)/span*side)/2,offY=(side-(maxY-minY)/span*side)/2;
+ return input.map(s=>s.map(p=>({x:pad+offX+(p.x-minX)/span*side,y:pad+offY+(p.y-minY)/span*side,time:p.time})));
+}
+function viewPath(s){return s.map((p,i)=>(i?'L ':'M ')+p.x.toFixed(5)+' '+p.y.toFixed(5)).join(' ');}
+function labelFor(meta){const review=String(meta?.instructional_review_status||meta?.instructor_review?.status||meta?.svg?.instructor_review_status||'').toLowerCase(),provenance=String(meta?.provenance_status||meta?.svg?.provenance_status||meta?.candidate_status||'').toLowerCase();return review==='approved'&&provenance==='verified'?'Verified source reference':'UNVERIFIED · pending review';}
+function sourceBlock(meta){
+ const source=meta?.reference_source||meta?.source||meta?.svg||{},parts=[source.title||source.source||meta?.source_title,source.attribution||source.creator,source.license].filter(Boolean),url=source.url||source.source_url||source.source_file_url||'';
+ const fragment=document.createDocumentFragment();fragment.append(document.createTextNode(parts.join(' · ')||'Source details unavailable'));
+ if(/^https:\/\//i.test(String(url))){fragment.append(document.createTextNode(' · '));const a=document.createElement('a');a.href=String(url);a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open instructional source';fragment.append(a);}return fragment;
+}
+function drawSvgPreview(svgId,strokesInput,meta){
+ const svg=$(svgId);svg.replaceChildren();const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs'),marker=document.createElementNS(ns,'marker'),tip=document.createElementNS(ns,'path');
+ marker.id=svgId+'-arrow';marker.setAttribute('markerWidth','.035');marker.setAttribute('markerHeight','.035');marker.setAttribute('refX','.03');marker.setAttribute('refY','.0175');marker.setAttribute('orient','auto');marker.setAttribute('markerUnits','userSpaceOnUse');tip.setAttribute('d','M0,0 L.035,.0175 L0,.035 z');tip.setAttribute('fill','#27364d');marker.appendChild(tip);defs.appendChild(marker);svg.appendChild(defs);
+ const wm=document.createElementNS(ns,'text');wm.setAttribute('x','.5');wm.setAttribute('y','.55');wm.setAttribute('text-anchor','middle');wm.setAttribute('dominant-baseline','middle');wm.setAttribute('font-size','.62');wm.setAttribute('fill','#aebbd0');wm.setAttribute('opacity','.34');wm.style.fontFamily='"Noto Sans Devanagari","Noto Sans Tamil","Noto Sans JP",sans-serif';wm.textContent=target?.character_text||'—';svg.appendChild(wm);
+ scaledPoints(strokesInput,meta).forEach((s,i)=>{if(s.length<2)return;const color=COLORS[i%COLORS.length],path=document.createElementNS(ns,'path');path.setAttribute('d',viewPath(s));path.setAttribute('fill','none');path.setAttribute('stroke',color);path.setAttribute('stroke-width','.012');path.setAttribute('stroke-linecap','round');path.setAttribute('stroke-linejoin','round');path.setAttribute('marker-end','url(#'+svgId+'-arrow)');path.dataset.previewStroke=String(i);svg.appendChild(path);
+ const dot=document.createElementNS(ns,'circle');dot.setAttribute('cx',s[0].x);dot.setAttribute('cy',s[0].y);dot.setAttribute('r','.014');dot.setAttribute('fill','#fff');dot.setAttribute('stroke',color);dot.setAttribute('stroke-width','.006');svg.appendChild(dot);
+ const number=document.createElementNS(ns,'text');number.setAttribute('x',String(Math.min(.96,s[0].x+.02)));number.setAttribute('y',String(Math.max(.04,s[0].y-.02)));number.setAttribute('font-size','.035');number.setAttribute('font-weight','700');number.setAttribute('fill','#111827');number.textContent=String(i+1);svg.appendChild(number);});
+}
+function fillStrokeControls(which,input){
+ const select=$(which+'StrokeSelect'),list=$(which+'StrokeList');select.replaceChildren();list.replaceChildren();
+ input.forEach((stroke,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent='Stroke '+(i+1);select.append(o);const li=document.createElement('li');li.textContent='Stroke '+(i+1)+': start ('+Number(stroke[0]?.x||0).toFixed(3)+', '+Number(stroke[0]?.y||0).toFixed(3)+') → end ('+Number(stroke.at(-1)?.x||0).toFixed(3)+', '+Number(stroke.at(-1)?.y||0).toFixed(3)+')'+(i<input.length-1?' · pen up before stroke '+(i+2):' · final stroke');list.append(li);});
+ $(which+'StrokeSelect').disabled=!input.length;$(which+'PlayStroke').disabled=!input.length;$(which+'PlayAll').disabled=!input.length;
+}
+function renderComparison(){
+ const old=refPointStrokes(),next=candidatePointStrokes();drawSvgPreview('existingPreview',old,currentReference?.reference_source);drawSvgPreview('candidatePreview',next,candidateData?.svg);
+ $('existingStatus').textContent=currentReference?labelFor(currentReference.reference_source||{}):'Not loaded';$('candidateStatus').textContent=candidateData?labelFor(candidateData):next.length?'UNVERIFIED · draft preview':'No candidate loaded';
+ fillStrokeControls('existing',old);fillStrokeControls('candidate',next);$('existingSource').replaceChildren();$('candidateSource').replaceChildren();
+ if(currentReference)$('existingSource').append(sourceBlock(currentReference));else $('existingSource').textContent='Saved reference has not loaded.';
+ if(candidateData)$('candidateSource').append(sourceBlock(candidateData));else $('candidateSource').textContent=next.length?'Live drawing preview · no source review claimed.':'Load pending candidate JSON or draw a proposed candidate.';
+ $('compareStatus').textContent=target?'Saved reference fetched read-only. Candidate preview is local and pending review.':'Choose a character to load its saved reference.';updateCandidateOverlay();
+}
+async function playPreview(which,index=null){
+ const paths=[...$(which+'Preview').querySelectorAll('[data-preview-stroke]')];if(!paths.length)return;
+ for(let i=0;i<paths.length;i++){if(index!==null&&i!==index)continue;const p=paths[i],len=p.getTotalLength();p.style.strokeDasharray=String(len);p.style.strokeDashoffset=String(len);p.style.transition='none';p.getBoundingClientRect();p.style.transition='stroke-dashoffset '+Math.max(.35,Math.min(1.1,len*1.5))+'s linear';p.style.strokeDashoffset='0';await new Promise(resolve=>setTimeout(resolve,Math.max(350,Math.min(1100,len*1500))));}
+}
+function updateCandidateOverlay(){
+ const svg=$('candidateOverlay');if(!svg)return;svg.replaceChildren();if(!$('overlayCandidate')?.checked)return;const input=candidatePointStrokes();if(!input.length)return;
+ const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs'),m=document.createElementNS(ns,'marker'),tip=document.createElementNS(ns,'path');m.id='candidate-overlay-arrow';m.setAttribute('markerWidth','.04');m.setAttribute('markerHeight','.04');m.setAttribute('refX','.035');m.setAttribute('refY','.02');m.setAttribute('orient','auto');m.setAttribute('markerUnits','userSpaceOnUse');tip.setAttribute('d','M0,0 L.04,.02 L0,.04 z');tip.setAttribute('fill','#059669');m.appendChild(tip);defs.appendChild(m);svg.appendChild(defs);
+ scaledPoints(input,candidateData?.svg).forEach(s=>{if(s.length<2)return;const p=document.createElementNS(ns,'path');p.setAttribute('d',viewPath(s));p.setAttribute('fill','none');p.setAttribute('stroke','#059669');p.setAttribute('stroke-width','.012');p.setAttribute('stroke-dasharray','.025 .015');p.setAttribute('marker-end','url(#candidate-overlay-arrow)');svg.appendChild(p);});
+}
+async function loadCurrentReference(){
+ const id=target?.id;if(!id)return;const request=++referenceRequestToken;$('compareStatus').textContent='Loading existing database reference (read-only)…';
+ try{const response=await fetch(API+'/characters/'+id+'/reference-strokes');if(!response.ok)throw Error('Reference API returned '+response.status);const data=await response.json();if(request!==referenceRequestToken||target?.id!==id)return;currentReference=data;renderComparison();}
+ catch(error){if(request===referenceRequestToken){currentReference=null;renderComparison();$('compareStatus').textContent='Could not load saved reference: '+error.message;}}
+}
+async function findStagedCandidates(){
+ const id=target?.id;if(!id)return;let auth='';try{auth=localStorage.getItem('strokespeak_access_token')||'';}catch{}
+ if(!auth){$('stagedCandidateStatus').textContent='Sign in to StrokeSpeak as a developer/admin in this browser to list staged candidates.';return;}
+ $('findStagedCandidates').disabled=true;$('stagedCandidateStatus').textContent='Looking for pending candidate files…';
+ try{
+  const response=await fetch(API+'/developer/stroke-preview/candidates/'+id,{headers:{'Authorization':'Bearer '+auth}});
+  const data=await response.json();if(!response.ok)throw Error(data.detail||'Candidate lookup returned '+response.status);
+  stagedCandidates=data.candidates||[];const select=$('stagedCandidateSelect');select.replaceChildren();
+  if(!stagedCandidates.length){const option=document.createElement('option');option.textContent='No staged candidate for this character';select.append(option);select.disabled=true;candidateData=null;renderComparison();$('stagedCandidateStatus').textContent='No pending inbox candidate exists for this character. You can open a local JSON or capture a proposed sequence.';return;}
+  stagedCandidates.forEach((entry,index)=>{const c=entry.candidate,o=document.createElement('option');o.value=String(index);o.textContent=(entry.file_name||c.capture_id||'candidate')+' · '+(c.stroke_count||c.points?.length||'?')+' strokes · pending review';select.append(o);});
+  select.disabled=stagedCandidates.length<2;
+  const latest=stagedCandidates[0];candidateData=latest.candidate;select.value='0';renderComparison();
+  $('stagedCandidateStatus').textContent=stagedCandidates.length+' pending candidate(s) found. The newest is previewed; status remains unverified.';
+ }catch(error){$('stagedCandidateStatus').textContent='Could not list candidates: '+error.message+' (developer/admin login required).';}
+ finally{$('findStagedCandidates').disabled=false;}
+}
+function chooseStagedCandidate(){
+ const entry=stagedCandidates[Number($('stagedCandidateSelect').value)];if(!entry)return;candidateData=entry.candidate;renderComparison();say('Staged candidate opened locally for preview. Review status remains pending.');
+}
+
+async function readCandidateFile(file){
+ if(!file||!target)return;try{const candidate=JSON.parse(await file.text()),id=Number(candidate.character_id||candidate.characterId||candidate.target?.id),character=candidate.character||candidate.character_text||candidate.target?.character_text;
+ if(id&&id!==target.id)throw Error('Candidate belongs to ID '+id+', not selected ID '+target.id+'.');if(character&&character!==target.character_text)throw Error('Character in candidate does not match the selected glyph.');
+ const points=candidate.points||candidate.stroke_data||candidate.strokeData;if(!Array.isArray(points)||!points.length)throw Error('This JSON has no ordered point strokes.');
+ candidateData=candidate;renderComparison();say('Candidate loaded locally and marked unverified/pending review.');
+ }catch(error){candidateData=null;renderComparison();say('Candidate not loaded: '+error.message,true);}
+}
+function showLocalSource(file){
+ const host=$('sourceMediaContainer');host.replaceChildren();if(sourceObjectUrl)URL.revokeObjectURL(sourceObjectUrl);sourceObjectUrl=null;if(!file)return;sourceObjectUrl=URL.createObjectURL(file);const node=document.createElement(file.type.startsWith('video/')?'video':'img');node.className='source-preview';node.src=sourceObjectUrl;if(node.tagName==='VIDEO'){node.controls=true;node.playsInline=true;}node.alt='Local instructional source preview';host.append(node);
+}
+function scoreCandidate(){
+ const learner=normalized(),reference=candidatePointStrokes();if(!target||!learner.length||!reference.length){$('scoreResult').textContent='Draw a learner attempt and load or capture a candidate first.';return;}
+ let token='';try{token=localStorage.getItem('strokespeak_access_token')||'';}catch{}if(!token){$('scoreResult').textContent='Sign in with an administrator account in this browser first.';return;}
+ $('scorePreview').disabled=true;$('scoreResult').textContent='Running the existing geometric comparison in dry-run mode…';
+ fetch(API+'/developer/stroke-preview/evaluate',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({character_id:target.id,learner_strokes:learner,reference_strokes:reference})})
+ .then(async response=>{const data=await response.json();if(!response.ok)throw Error(data.detail||'Preview returned '+response.status);$('scoreResult').textContent='Dry run only · not saved · '+(candidateData?'candidate':'current drawing')+' geometry · shape '+data.handwriting_score+'/100 · stroke order '+data.stroke_order_score+'/100 · '+data.feedback;})
+ .catch(error=>{$('scoreResult').textContent='Dry-run score unavailable: '+error.message+' (administrator login required).';}).finally(update);
+}
+
+function clearTarget(){referenceRequestToken++;target=null;currentReference=null;candidateData=null;stagedCandidates=[];$('stagedCandidateSelect').innerHTML='<option>No candidates loaded</option>';$('stagedCandidateSelect').disabled=true;renderComparison();$('glyph').textContent='—';$('watermark').textContent='—';$('heading').textContent='Select a character';$('meta').textContent='Choose a language and database character.';resetCapture();}
+async function loadLanguages(){
+  say('Loading unresolved language groups…');try{const r=await fetch(API+'/languages');if(!r.ok)throw Error('Languages API returned '+r.status);const d=await r.json();languages=(d.languages||[]).filter(x=>Object.hasOwn(BLOCKED,x.script_code));lang.innerHTML='<option value="">Choose Sanskrit or Tamil</option>';
+    languages.forEach(x=>{const o=document.createElement('option');o.value=x.script_code;o.textContent=x.name;lang.appendChild(o);});if(!languages.length)throw Error('No blocked groups returned by the API.');say('Loaded '+languages.length+' blocked language groups.');
+  }catch(e){lang.innerHTML='<option value="">API unavailable</option>';say(e.message+'. Start FastAPI and Vite, then reload.',true);}
+}
+async function loadCharacters(){
+  const l=languages.find(x=>x.script_code===lang.value);clearTarget();chars=[];char.disabled=true;char.innerHTML='<option>Loading database characters…</option>';if(!l){char.innerHTML='<option>Choose a language first</option>';return;}
+  try{const r=await fetch(API+'/characters?language_id='+encodeURIComponent(l.id));if(!r.ok)throw Error('Characters API returned '+r.status);const d=await r.json(),allowed=new Set(BLOCKED[l.script_code]);chars=(d.characters||[]).filter(x=>allowed.has(x.character_text));char.innerHTML='<option value="">Choose a character</option>';
+    chars.forEach(x=>{const o=document.createElement('option');o.value=String(x.id);o.textContent=x.character_text+' · #'+x.id+(x.has_reference?' · current reference exists':'');char.appendChild(o);});char.disabled=!chars.length;if(!chars.length)throw Error('No blocked model characters returned.');say('Loaded '+chars.length+' blocked database characters.');
+  }catch(e){char.innerHTML='<option>Could not load characters</option>';say(e.message,true);}
+}
+function selectCharacter(){
+  target=chars.find(x=>x.id===Number(char.value))||null;if(!target){clearTarget();return;}const l=languages.find(x=>x.script_code===lang.value);
+  $('glyph').textContent=target.character_text;$('watermark').textContent=target.character_text;$('heading').textContent=(l?.name||'Language')+' · '+target.character_text;currentReference=null;candidateData=null;stagedCandidates=[];$('stagedCandidateSelect').innerHTML='<option>No candidates loaded</option>';$('stagedCandidateSelect').disabled=true;$('stagedCandidateStatus').textContent='Checking the pending review inbox…';
+  $('meta').textContent='Database ID '+target.id+' · reference status is shown below';resetCapture();loadCurrentReference();findStagedCandidates();
+}
+function down(e){if(!target||active||(e.pointerType==='mouse'&&e.button!==0))return;e.preventDefault();canvas.setPointerCapture(e.pointerId);if(startTime===null)startTime=performance.now();active=[point(e)];strokes.push(active);draw();update();}
+function move(e){if(!active||!canvas.hasPointerCapture(e.pointerId))return;e.preventDefault();const q=point(e),last=active[active.length-1];if(Math.hypot(q.x-last.x,q.y-last.y)<.001)return;active.push(q);draw();preview();update();renderComparison();}
+function up(e){if(!active)return;if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);active=null;draw();preview();update();renderComparison();say('Stroke captured. Lift between strokes; this export remains pending review.');}
+lang.addEventListener('change',loadCharacters);char.addEventListener('change',selectCharacter);$('reload').addEventListener('click',loadLanguages);
+$('undo').addEventListener('click',()=>{if(active)return;strokes.pop();if(!strokes.length)startTime=null;draw();preview();update();});$('reset').addEventListener('click',resetCapture);$('replay').addEventListener('click',replay);$('export').addEventListener('click',exportJson);
+$('sourceConfirmed').addEventListener('change',update);['sourceTitle','sourceUrl','attribution','license','capturedBy'].forEach(id=>$(id).addEventListener('input',update));
+canvas.addEventListener('pointerdown',down);canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);
+$('candidateFile').addEventListener('change',e=>readCandidateFile(e.target.files?.[0]));$('sourceMedia').addEventListener('change',e=>showLocalSource(e.target.files?.[0]));$('findStagedCandidates').addEventListener('click',findStagedCandidates);$('stagedCandidateSelect').addEventListener('change',chooseStagedCandidate);
+$('existingPlayStroke').addEventListener('click',()=>playPreview('existing',Number($('existingStrokeSelect').value)));$('existingPlayAll').addEventListener('click',()=>playPreview('existing'));
+$('candidatePlayStroke').addEventListener('click',()=>playPreview('candidate',Number($('candidateStrokeSelect').value)));$('candidatePlayAll').addEventListener('click',()=>playPreview('candidate'));
+$('overlayCandidate').addEventListener('change',updateCandidateOverlay);$('scorePreview').addEventListener('click',scoreCandidate);
+new ResizeObserver(sizeCanvas).observe($('drawArea'));sizeCanvas();preview();renderComparison();loadLanguages();
+</script></body></html>

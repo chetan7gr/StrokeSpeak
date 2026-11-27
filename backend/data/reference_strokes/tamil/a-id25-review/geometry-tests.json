@@ -1,0 +1,27 @@
+{
+  "positive_trace": {
+    "shape": 100.0,
+    "order": 100.0,
+    "status": "passed",
+    "passed": true
+  },
+  "positive_trace_resampled_and_perturbed": {
+    "shape": 98.48,
+    "order": 98.88,
+    "status": "passed",
+    "passed": true
+  },
+  "reversed_stroke_order": {
+    "shape": 100.0,
+    "order": 12.66,
+    "status": "stroke_order_retry",
+    "passed": false
+  },
+  "reversed_stroke_direction": {
+    "shape": 100.0,
+    "order": 15.2,
+    "status": "stroke_order_retry",
+    "passed": false
+  },
+  "svg_point_consistency": "passed"
+}

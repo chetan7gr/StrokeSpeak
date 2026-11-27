@@ -1,0 +1,554 @@
+{
+  "model_name": "StrokeSpeak Sanskrit Devanagari CNN",
+  "version": "1.0.0",
+  "script_code": "sa-devanagari",
+  "language": "Sanskrit (Devanagari)",
+  "model_file": "sanskrit_devanagari_v1.pt",
+  "weights_file": "sanskrit_devanagari_weights.pt",
+  "architecture": "LeNet-style 3-Stage ConvNet (Conv-BN-ReLU-MaxPool x3 + FC128 + FC10)",
+  "input_dimensions": [
+    1,
+    1,
+    32,
+    32
+  ],
+  "classes": [
+    "अ",
+    "आ",
+    "इ",
+    "ई",
+    "उ",
+    "ऊ",
+    "ए",
+    "ऐ",
+    "ओ",
+    "औ"
+  ],
+  "class_prefixes": [
+    "vowel_A",
+    "vowel_AA",
+    "vowel_I",
+    "vowel_II",
+    "vowel_U",
+    "vowel_UU",
+    "vowel_E",
+    "vowel_AI",
+    "vowel_O",
+    "vowel_AU"
+  ],
+  "num_classes": 10,
+  "preprocessing": {
+    "grayscale": true,
+    "invert_if_light_bg": true,
+    "otsu_thresholding": true,
+    "aspect_ratio_preserving_crop_and_pad": true,
+    "interpolation": "cv2.INTER_AREA",
+    "normalization": "float32 [0.0, 1.0]",
+    "target_size": 32
+  },
+  "dataset": {
+    "provenance": "SYNTHETIC (Procedural Vector Motor Simulation)",
+    "license": "Internal StrokeSpeak Project Asset",
+    "base_samples_per_class": 20,
+    "total_base_images": 200,
+    "train_samples": 1400,
+    "val_samples": 30,
+    "test_samples": 30,
+    "per_class_summary": {
+      "अ": {
+        "folder": "vowel_A",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "आ": {
+        "folder": "vowel_AA",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "इ": {
+        "folder": "vowel_I",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ई": {
+        "folder": "vowel_II",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "उ": {
+        "folder": "vowel_U",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ऊ": {
+        "folder": "vowel_UU",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ए": {
+        "folder": "vowel_E",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ऐ": {
+        "folder": "vowel_AI",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ओ": {
+        "folder": "vowel_O",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "औ": {
+        "folder": "vowel_AU",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      }
+    }
+  },
+  "metrics": {
+    "benchmark_type": "Synthetic-Data Benchmark Results (Tier 1 Held-Out Test Split)",
+    "evaluation_scope": "Held-out unaugmented synthetic motor simulations; does not represent unconstrained human handwriting.",
+    "total_test_samples": 30,
+    "correct_predictions": 30,
+    "accuracy": 1.0,
+    "accuracy_pct": 100.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "macro_f1_pct": 100.0,
+    "per_class": {
+      "अ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "आ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "इ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ई": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "उ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ऊ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ए": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ऐ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ओ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "औ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ]
+  },
+  "training_duration_seconds": 9.86,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.2672,
+      "train_acc": 0.5757,
+      "val_loss": 0.701,
+      "val_acc": 0.7667
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.3742,
+      "train_acc": 0.865,
+      "val_loss": 0.1277,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.1967,
+      "train_acc": 0.9343,
+      "val_loss": 0.0562,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0977,
+      "train_acc": 0.9786,
+      "val_loss": 0.0203,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.0629,
+      "train_acc": 0.9821,
+      "val_loss": 0.0121,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.0698,
+      "train_acc": 0.9771,
+      "val_loss": 0.0136,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.025,
+      "train_acc": 0.9964,
+      "val_loss": 0.0053,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.0199,
+      "train_acc": 0.9964,
+      "val_loss": 0.0031,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.0127,
+      "train_acc": 0.9979,
+      "val_loss": 0.0021,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.0091,
+      "train_acc": 0.9993,
+      "val_loss": 0.0007,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.0073,
+      "train_acc": 0.9986,
+      "val_loss": 0.0008,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.0139,
+      "train_acc": 0.9964,
+      "val_loss": 0.0004,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.0108,
+      "train_acc": 0.9986,
+      "val_loss": 0.0014,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.0048,
+      "train_acc": 1.0,
+      "val_loss": 0.0004,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.0083,
+      "train_acc": 0.9986,
+      "val_loss": 0.0025,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.0079,
+      "train_acc": 0.9993,
+      "val_loss": 0.0005,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.0291,
+      "train_acc": 0.9921,
+      "val_loss": 0.0045,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.0215,
+      "train_acc": 0.9936,
+      "val_loss": 0.0014,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0085,
+      "train_acc": 0.9993,
+      "val_loss": 0.0006,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.0027,
+      "train_acc": 1.0,
+      "val_loss": 0.0007,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.0098,
+      "train_acc": 0.9979,
+      "val_loss": 0.0125,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.0028,
+      "train_acc": 1.0,
+      "val_loss": 0.0002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.0044,
+      "train_acc": 0.9986,
+      "val_loss": 0.0043,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.0042,
+      "train_acc": 0.9986,
+      "val_loss": 0.0623,
+      "val_acc": 0.9667
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.0048,
+      "train_acc": 0.9986,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    }
+  ]
+}

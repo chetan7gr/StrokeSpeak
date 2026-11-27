@@ -1,0 +1,39 @@
+{
+  "svg_point_consistency": "passed",
+  "max_centerline_distance_outside_ink_px": 0.0,
+  "source_ink_distance_to_centerline_px_p95": 3.61,
+  "source_ink_distance_to_centerline_px_max": 7.07,
+  "positive_trace": {
+    "shape": 100.0,
+    "order": 100.0,
+    "status": "passed",
+    "accepted": true,
+    "verdict": "passed"
+  },
+  "positive_trace_resampled_and_perturbed": {
+    "shape": 98.88,
+    "order": 99.22,
+    "status": "passed",
+    "accepted": true,
+    "verdict": "passed"
+  },
+  "reversed_stroke_order": {
+    "shape": 100.0,
+    "order": 3.63,
+    "status": "stroke_order_retry",
+    "accepted": false,
+    "verdict": "passed"
+  },
+  "reversed_stroke_direction": {
+    "shape": 100.0,
+    "order": 13.1,
+    "status": "stroke_order_retry",
+    "accepted": false,
+    "verdict": "passed"
+  },
+  "positive_trace_with_cnn": {
+    "status": "mismatch_rejected",
+    "accepted": false,
+    "verdict": "failed"
+  }
+}

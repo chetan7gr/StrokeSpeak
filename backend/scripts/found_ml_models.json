@@ -1,0 +1,114 @@
+[
+  {
+    "filename": "chinese_metadata.json",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\chinese_metadata.json",
+    "size_bytes": 10112,
+    "size_kb": 9.88,
+    "script_language": "Simplified Chinese [zh-hans]"
+  },
+  {
+    "filename": "chinese_v1.pt",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\chinese_v1.pt",
+    "size_bytes": 659360,
+    "size_kb": 643.91,
+    "script_language": "Simplified Chinese [zh-hans]"
+  },
+  {
+    "filename": "chinese_weights.npz",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\chinese_weights.npz",
+    "size_bytes": 631244,
+    "size_kb": 616.45,
+    "script_language": "Simplified Chinese [zh-hans]"
+  },
+  {
+    "filename": "chinese_weights.pt",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\chinese_weights.pt",
+    "size_bytes": 633168,
+    "size_kb": 618.33,
+    "script_language": "Simplified Chinese [zh-hans]"
+  },
+  {
+    "filename": "japanese_hiragana_metadata.json",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\japanese_hiragana_metadata.json",
+    "size_bytes": 6043,
+    "size_kb": 5.9,
+    "script_language": "Japanese (Hiragana) [ja-hiragana]"
+  },
+  {
+    "filename": "japanese_hiragana_v1.pt",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\japanese_hiragana_v1.pt",
+    "size_bytes": 659800,
+    "size_kb": 644.34,
+    "script_language": "Japanese (Hiragana) [ja-hiragana]"
+  },
+  {
+    "filename": "japanese_hiragana_weights.npz",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\japanese_hiragana_weights.npz",
+    "size_bytes": 631760,
+    "size_kb": 616.95,
+    "script_language": "Japanese (Hiragana) [ja-hiragana]"
+  },
+  {
+    "filename": "japanese_hiragana_weights.pt",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\japanese_hiragana_weights.pt",
+    "size_bytes": 634054,
+    "size_kb": 619.19,
+    "script_language": "Japanese (Hiragana) [ja-hiragana]"
+  },
+  {
+    "filename": "sanskrit_devanagari_metadata.json",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\sanskrit_devanagari_metadata.json",
+    "size_bytes": 10953,
+    "size_kb": 10.7,
+    "script_language": "Sanskrit (Devanagari) [sa-devanagari]"
+  },
+  {
+    "filename": "sanskrit_devanagari_v1.pt",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\sanskrit_devanagari_v1.pt",
+    "size_bytes": 660324,
+    "size_kb": 644.85,
+    "script_language": "Sanskrit (Devanagari) [sa-devanagari]"
+  },
+  {
+    "filename": "sanskrit_devanagari_weights.npz",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\sanskrit_devanagari_weights.npz",
+    "size_bytes": 631760,
+    "size_kb": 616.95,
+    "script_language": "Sanskrit (Devanagari) [sa-devanagari]"
+  },
+  {
+    "filename": "sanskrit_devanagari_weights.pt",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\sanskrit_devanagari_weights.pt",
+    "size_bytes": 634116,
+    "size_kb": 619.25,
+    "script_language": "Sanskrit (Devanagari) [sa-devanagari]"
+  },
+  {
+    "filename": "tamil_metadata.json",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\tamil_metadata.json",
+    "size_bytes": 12269,
+    "size_kb": 11.98,
+    "script_language": "Tamil [ta]"
+  },
+  {
+    "filename": "tamil_v1.pt",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\tamil_v1.pt",
+    "size_bytes": 660692,
+    "size_kb": 645.21,
+    "script_language": "Tamil [ta]"
+  },
+  {
+    "filename": "tamil_weights.npz",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\tamil_weights.npz",
+    "size_bytes": 632792,
+    "size_kb": 617.96,
+    "script_language": "Tamil [ta]"
+  },
+  {
+    "filename": "tamil_weights.pt",
+    "path": "C:\\Users\\CHETAN\\.vscode\\StrokeSpeak\\backend\\app\\ml\\models\\tamil_weights.pt",
+    "size_bytes": 634642,
+    "size_kb": 619.77,
+    "script_language": "Tamil [ta]"
+  }
+]

@@ -1,0 +1,337 @@
+{
+  "hiragana_dataset": {
+    "name": "Japanese Hiragana",
+    "provenance": "MIXED (Real Handwriting + Canvas)",
+    "class_count": 10,
+    "total_images": 200,
+    "exact_duplicates": 0,
+    "near_duplicates": 0,
+    "min_pairwise_mse": 576.72,
+    "avg_pairwise_mse": 3619.76,
+    "class_stats": {
+      "kanaA": {
+        "sample_count": 20,
+        "min_pairwise_mse": 2328.71,
+        "avg_pairwise_mse": 6136.31,
+        "avg_contrast_std": 62.83,
+        "avg_pixel_intensity": 27.81
+      },
+      "kanaE": {
+        "sample_count": 20,
+        "min_pairwise_mse": 1143.59,
+        "avg_pairwise_mse": 3527.54,
+        "avg_contrast_std": 49.73,
+        "avg_pixel_intensity": 15.58
+      },
+      "kanaI": {
+        "sample_count": 20,
+        "min_pairwise_mse": 588.73,
+        "avg_pairwise_mse": 2702.85,
+        "avg_contrast_std": 41.54,
+        "avg_pixel_intensity": 10.82
+      },
+      "kanaKA": {
+        "sample_count": 20,
+        "min_pairwise_mse": 1365.06,
+        "avg_pairwise_mse": 3776.74,
+        "avg_contrast_std": 48.92,
+        "avg_pixel_intensity": 16.42
+      },
+      "kanaKE": {
+        "sample_count": 20,
+        "min_pairwise_mse": 1505.99,
+        "avg_pairwise_mse": 3658.54,
+        "avg_contrast_std": 50.75,
+        "avg_pixel_intensity": 16.52
+      },
+      "kanaKI": {
+        "sample_count": 20,
+        "min_pairwise_mse": 2113.7,
+        "avg_pairwise_mse": 3460.75,
+        "avg_contrast_std": 48.52,
+        "avg_pixel_intensity": 16.45
+      },
+      "kanaKO": {
+        "sample_count": 20,
+        "min_pairwise_mse": 745.17,
+        "avg_pairwise_mse": 2490.28,
+        "avg_contrast_std": 42.28,
+        "avg_pixel_intensity": 11.14
+      },
+      "kanaKU": {
+        "sample_count": 20,
+        "min_pairwise_mse": 576.72,
+        "avg_pairwise_mse": 2057.27,
+        "avg_contrast_std": 38.62,
+        "avg_pixel_intensity": 9.29
+      },
+      "kanaO": {
+        "sample_count": 20,
+        "min_pairwise_mse": 2377.48,
+        "avg_pairwise_mse": 5412.36,
+        "avg_contrast_std": 63.04,
+        "avg_pixel_intensity": 26.36
+      },
+      "kanaU": {
+        "sample_count": 20,
+        "min_pairwise_mse": 610.13,
+        "avg_pairwise_mse": 2974.94,
+        "avg_contrast_std": 46.39,
+        "avg_pixel_intensity": 12.78
+      }
+    }
+  },
+  "sanskrit_dataset": {
+    "name": "Sanskrit Devanagari",
+    "provenance": "SYNTHETIC (Procedural Vector Simulation)",
+    "class_count": 10,
+    "total_images": 200,
+    "exact_duplicates": 0,
+    "near_duplicates": 0,
+    "min_pairwise_mse": 206.89,
+    "avg_pairwise_mse": 1703.83,
+    "class_stats": {
+      "vowel_A": {
+        "sample_count": 20,
+        "min_pairwise_mse": 383.53,
+        "avg_pairwise_mse": 1910.87,
+        "avg_contrast_std": 46.35,
+        "avg_pixel_intensity": 244.98
+      },
+      "vowel_AA": {
+        "sample_count": 20,
+        "min_pairwise_mse": 495.19,
+        "avg_pairwise_mse": 2140.69,
+        "avg_contrast_std": 54.0,
+        "avg_pixel_intensity": 241.46
+      },
+      "vowel_AI": {
+        "sample_count": 20,
+        "min_pairwise_mse": 260.41,
+        "avg_pairwise_mse": 1600.31,
+        "avg_contrast_std": 46.2,
+        "avg_pixel_intensity": 245.18
+      },
+      "vowel_AU": {
+        "sample_count": 20,
+        "min_pairwise_mse": 729.23,
+        "avg_pairwise_mse": 2102.44,
+        "avg_contrast_std": 56.24,
+        "avg_pixel_intensity": 240.28
+      },
+      "vowel_E": {
+        "sample_count": 20,
+        "min_pairwise_mse": 287.97,
+        "avg_pairwise_mse": 1403.17,
+        "avg_contrast_std": 42.44,
+        "avg_pixel_intensity": 246.64
+      },
+      "vowel_I": {
+        "sample_count": 20,
+        "min_pairwise_mse": 213.09,
+        "avg_pairwise_mse": 1420.85,
+        "avg_contrast_std": 38.47,
+        "avg_pixel_intensity": 248.08
+      },
+      "vowel_II": {
+        "sample_count": 20,
+        "min_pairwise_mse": 511.5,
+        "avg_pairwise_mse": 1587.79,
+        "avg_contrast_std": 42.87,
+        "avg_pixel_intensity": 246.52
+      },
+      "vowel_O": {
+        "sample_count": 20,
+        "min_pairwise_mse": 573.61,
+        "avg_pairwise_mse": 2139.97,
+        "avg_contrast_std": 55.5,
+        "avg_pixel_intensity": 240.68
+      },
+      "vowel_U": {
+        "sample_count": 20,
+        "min_pairwise_mse": 206.89,
+        "avg_pairwise_mse": 1331.11,
+        "avg_contrast_std": 37.22,
+        "avg_pixel_intensity": 248.52
+      },
+      "vowel_UU": {
+        "sample_count": 20,
+        "min_pairwise_mse": 346.68,
+        "avg_pairwise_mse": 1401.08,
+        "avg_contrast_std": 40.45,
+        "avg_pixel_intensity": 247.36
+      }
+    }
+  },
+  "tamil_dataset": {
+    "name": "Tamil",
+    "provenance": "SYNTHETIC (Procedural Vector Simulation)",
+    "class_count": 12,
+    "total_images": 240,
+    "exact_duplicates": 0,
+    "near_duplicates": 0,
+    "min_pairwise_mse": 198.32,
+    "avg_pairwise_mse": 1464.14,
+    "class_stats": {
+      "vowel_A": {
+        "sample_count": 20,
+        "min_pairwise_mse": 422.71,
+        "avg_pairwise_mse": 1643.74,
+        "avg_contrast_std": 47.31,
+        "avg_pixel_intensity": 244.68
+      },
+      "vowel_AA": {
+        "sample_count": 20,
+        "min_pairwise_mse": 354.86,
+        "avg_pairwise_mse": 1770.96,
+        "avg_contrast_std": 52.26,
+        "avg_pixel_intensity": 242.48
+      },
+      "vowel_AI": {
+        "sample_count": 20,
+        "min_pairwise_mse": 297.45,
+        "avg_pairwise_mse": 1296.43,
+        "avg_contrast_std": 45.3,
+        "avg_pixel_intensity": 245.68
+      },
+      "vowel_AU": {
+        "sample_count": 20,
+        "min_pairwise_mse": 414.62,
+        "avg_pairwise_mse": 1766.8,
+        "avg_contrast_std": 52.43,
+        "avg_pixel_intensity": 242.42
+      },
+      "vowel_E": {
+        "sample_count": 20,
+        "min_pairwise_mse": 276.9,
+        "avg_pairwise_mse": 1324.59,
+        "avg_contrast_std": 39.66,
+        "avg_pixel_intensity": 247.78
+      },
+      "vowel_EE": {
+        "sample_count": 20,
+        "min_pairwise_mse": 198.32,
+        "avg_pairwise_mse": 1412.76,
+        "avg_contrast_std": 41.87,
+        "avg_pixel_intensity": 246.91
+      },
+      "vowel_I": {
+        "sample_count": 20,
+        "min_pairwise_mse": 296.56,
+        "avg_pairwise_mse": 1568.63,
+        "avg_contrast_std": 45.68,
+        "avg_pixel_intensity": 245.45
+      },
+      "vowel_II": {
+        "sample_count": 20,
+        "min_pairwise_mse": 258.18,
+        "avg_pairwise_mse": 1036.59,
+        "avg_contrast_std": 38.81,
+        "avg_pixel_intensity": 248.1
+      },
+      "vowel_O": {
+        "sample_count": 20,
+        "min_pairwise_mse": 228.04,
+        "avg_pairwise_mse": 1316.59,
+        "avg_contrast_std": 41.24,
+        "avg_pixel_intensity": 247.23
+      },
+      "vowel_OO": {
+        "sample_count": 20,
+        "min_pairwise_mse": 301.12,
+        "avg_pairwise_mse": 1625.83,
+        "avg_contrast_std": 46.23,
+        "avg_pixel_intensity": 245.29
+      },
+      "vowel_U": {
+        "sample_count": 20,
+        "min_pairwise_mse": 242.85,
+        "avg_pairwise_mse": 1190.26,
+        "avg_contrast_std": 36.76,
+        "avg_pixel_intensity": 248.67
+      },
+      "vowel_UU": {
+        "sample_count": 20,
+        "min_pairwise_mse": 539.1,
+        "avg_pairwise_mse": 1616.5,
+        "avg_contrast_std": 51.93,
+        "avg_pixel_intensity": 242.77
+      }
+    }
+  },
+  "chinese_dataset": {
+    "name": "Simplified Chinese",
+    "provenance": "SYNTHETIC (Procedural Vector Simulation)",
+    "class_count": 9,
+    "total_images": 180,
+    "exact_duplicates": 0,
+    "near_duplicates": 0,
+    "min_pairwise_mse": 233.8,
+    "avg_pairwise_mse": 3951.81,
+    "class_stats": {
+      "char_DA": {
+        "sample_count": 20,
+        "min_pairwise_mse": 1274.27,
+        "avg_pairwise_mse": 4038.48,
+        "avg_contrast_std": 61.99,
+        "avg_pixel_intensity": 236.55
+      },
+      "char_ER": {
+        "sample_count": 20,
+        "min_pairwise_mse": 774.61,
+        "avg_pairwise_mse": 2684.23,
+        "avg_contrast_std": 51.83,
+        "avg_pixel_intensity": 242.37
+      },
+      "char_KOU": {
+        "sample_count": 20,
+        "min_pairwise_mse": 1742.0,
+        "avg_pairwise_mse": 4463.54,
+        "avg_contrast_std": 64.68,
+        "avg_pixel_intensity": 235.06
+      },
+      "char_REN": {
+        "sample_count": 20,
+        "min_pairwise_mse": 962.71,
+        "avg_pairwise_mse": 3226.9,
+        "avg_contrast_std": 52.43,
+        "avg_pixel_intensity": 242.0
+      },
+      "char_RI": {
+        "sample_count": 20,
+        "min_pairwise_mse": 2582.52,
+        "avg_pairwise_mse": 5773.74,
+        "avg_contrast_std": 71.63,
+        "avg_pixel_intensity": 230.13
+      },
+      "char_SAN": {
+        "sample_count": 20,
+        "min_pairwise_mse": 883.63,
+        "avg_pairwise_mse": 3770.07,
+        "avg_contrast_std": 58.7,
+        "avg_pixel_intensity": 238.48
+      },
+      "char_SHAN": {
+        "sample_count": 20,
+        "min_pairwise_mse": 1196.56,
+        "avg_pairwise_mse": 4150.27,
+        "avg_contrast_std": 63.95,
+        "avg_pixel_intensity": 235.51
+      },
+      "char_YI": {
+        "sample_count": 20,
+        "min_pairwise_mse": 233.8,
+        "avg_pairwise_mse": 1463.73,
+        "avg_contrast_std": 37.83,
+        "avg_pixel_intensity": 248.28
+      },
+      "char_YUE": {
+        "sample_count": 20,
+        "min_pairwise_mse": 2043.03,
+        "avg_pairwise_mse": 5995.37,
+        "avg_contrast_std": 71.49,
+        "avg_pixel_intensity": 230.0
+      }
+    }
+  }
+}

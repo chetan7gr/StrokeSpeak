@@ -1,0 +1,89 @@
+REPORT FOR CLAUDE REVIEW
+
+================================================================================
+STROKESPEAK VERIFICATION REPORT — CHUNK 3 (COLD-START PREP)
+Generated: 2026-11-17
+Platform: StrokeSpeak (React + Vite, FastAPI + Uvicorn, MySQL 8.0)
+Testing Target: Cold-Start Prep, Environment Audit & Launchers
+================================================================================
+
+1. WHAT WAS DONE [RAN AND VERIFIED]
+--------------------------------------------------------------------------------
+1. PYTHON VENV AUDIT:
+   - Python binary: C:\Users\CHETAN\.vscode\StrokeSpeak\backend\.venv\Scripts\python.exe
+   - Python version: CPython 3.12.2 (Windows 64-bit)
+   - pyvenv.cfg: home = C:\Users\CHETAN\AppData\Local\Programs\Python\Python312, version = 3.12.2
+   - Home folder exists on disk: True
+   - Imports verified: fastapi (0.143.2), uvicorn (0.54.0), pydantic (2.14.1), mysql.connector (26.7.0)
+   - CLI check: python -m uvicorn --version returned "Running uvicorn 0.54.0 with CPython 3.12.2 on Windows"
+   - pip list vs requirements.txt: All 5 requirements (fastapi, uvicorn[standard], mysql-connector-python, python-dotenv, gTTS) satisfied. 0 missing.
+
+2. PORTS & PROCESSES AUDIT (READ-ONLY):
+   - Port 8000: LISTENING (PID 19676), Command: "C:\Users\CHETAN\AppData\Local\Programs\Python\Python312\python.exe" -m uvicorn main:app --reload
+   - Port 5173: LISTENING (PID 4036), Command: "node" "C:\Users\CHETAN\.vscode\StrokeSpeak\frontend\node_modules\.bin\..\vite\bin\vite.js"
+   - Port 8001: LISTENING (PID 22936), Command: "C:\Users\CHETAN\AppData\Local\Programs\Python\Python312\python.exe" -m uvicorn main:app --port 8001
+
+3. FRONTEND ARCHITECTURE & CORS:
+   - frontend\node_modules: Confirmed present
+   - Scripts in package.json: dev (vite), build (vite build), lint (oxlint), preview (vite preview)
+   - Vite dev port: 5173
+   - Frontend API base URL: Relative /api/v1/... calls in frontend\src\App.jsx (lines 301, 351, 378, 586), proxied to http://127.0.0.1:8000 via frontend\vite.config.js lines 10-16.
+   - CORS settings in backend\main.py: CORSMiddleware is NOT configured in backend\main.py. No allowed origins are set. Application relies on Vite proxy for local dev. Direct cross-origin calls would fail CORS. Per instructions, read-only audit only; main.py was not modified.
+
+4. CONFIG & MYSQL CONNECTION:
+   - Defined variable NAMES in backend\.env: DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD, STROKESPEAK_TRANSCRIPTION_PROVIDER, OPENAI_API_KEY (values redacted).
+   - Variables read by backend code: DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER, OPENAI_API_KEY, STROKESPEAK_TRANSCRIPTION_PROVIDER (all present in .env). Safe defaults exist in code for STROKESPEAK_OPENAI_TRANSCRIPTION_MODEL and STROKESPEAK_WHISPER_MODEL.
+   - MySQL connection query: "SELECT 1;" executed using app.db.database.get_db_connection(). Returned (1,) successfully (True).
+
+5. FILE SIZES & PRIVACY AUDIT:
+   - backend\assets\kanjivg\kanji: Exactly 92 SVG files for Kana (total size: 195,862 bytes / 191.27 KB).
+   - backend\assets\kanjivg: ATTRIBUTION.md (1,523 bytes), COPYING (20,595 bytes), attribution backups.
+   - backend\db_backups: full_export_2026-11-17.json confirmed present (1,280,168 bytes / 1.22 MB) plus 12 table snapshots.
+   - docs\: 8 documentation markdown files plus timestamped backups.
+   - Privacy scan: backend\.env contains plain-text credentials and API key. backend\db_backups\full_export_2026-11-17.json contains users table rows with placeholder password hashes. Warned against public sharing. Root logs inspected; 0 secrets found. docs/PROJECT_REPORT_CONTENT.md contains schema column documentation only.
+
+6. NEW FILES CREATED (DO NOT RUN):
+   - docs\COLD_START_CHECKLIST.md: Numbered checklist with steps (a)-(h), expected results, and troubleshooting for ports, blocked .exe Application Control policy, MySQL services, and learner IDs. Explicitly marked UNTESTED until run by hand.
+   - start_backend.bat: Launcher for backend (cd backend && .\.venv\Scripts\python.exe -m uvicorn main:app --port 8000). Created, NOT executed.
+   - start_frontend.bat: Launcher for frontend (cd frontend && npm run dev). Created, NOT executed.
+
+7. SCRIPTS BACKED UP:
+   - backend\scripts\inspect_users.py: Backed up to backend\scripts\inspect_users.py.bak-2026-11-17-161400. Changes made: Added DESCRIBE users, SHOW INDEX FROM users, and user query without printing password_hash.
+
+
+2. FILES CREATED OR CHANGED & BACKUPS [RAN AND VERIFIED]
+--------------------------------------------------------------------------------
+- `docs/COLD_START_CHECKLIST.md` (New file, marked UNTESTED)
+- `start_backend.bat` (New file, not run)
+- `start_frontend.bat` (New file, not run)
+- `backend/scripts/inspect_users.py` (Backup: `backend/scripts/inspect_users.py.bak-2026-11-17-161400`)
+- `backend/HANDOFF_REPORT.md` (Backup: `backend/HANDOFF_REPORT.md.bak-2026-11-17-161800`)
+- `backend/REPORT_FOR_CLAUDE_REVIEW.txt` (Backup: `backend/REPORT_FOR_CLAUDE_REVIEW.txt.bak-2026-11-17-161800`)
+
+
+3. DATABASE COUNTS SUMMARY [RAN AND VERIFIED]
+--------------------------------------------------------------------------------
+| Table | Before Chunk 3 | After Chunk 3 | Change | Notes |
+|---|---:|---:|---:|---|
+| users | 3 | 3 | 0 | Preserved |
+| languages | 12 | 12 | 0 | Preserved |
+| characters | 250 | 250 | 0 | Preserved |
+| learning_lessons | 356 | 356 | 0 | Preserved |
+| lesson_progress | 12 | 12 | 0 | Preserved |
+| practice_attempts | 88 | 88 | 0 | Preserved |
+| **Total Rows** | **721** | **721** | **0** | Zero database writes in Chunk 3 |
+
+
+4. ITEMS UNVERIFIED OR NOT DONE [RAN AND VERIFIED]
+--------------------------------------------------------------------------------
+- Cold-start checklist execution: Not run (as instructed, left as UNTESTED until manual run by user).
+- Launcher batch files (`start_backend.bat`, `start_frontend.bat`): Not executed (as strictly instructed).
+- Backend CORS configuration: Not added to `main.py` (read-only audit; instructed to NOT edit `main.py`).
+
+
+5. EXACT NEXT TASK
+--------------------------------------------------------------------------------
+Proceed with **Chunk 4: Rehearsal Dry-Run on Learner 1 & Final Screenshot Capture**, or manual cold-start verification by user.
+
+================================================================================
+END OF REPORT

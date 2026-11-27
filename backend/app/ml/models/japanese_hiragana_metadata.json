@@ -1,0 +1,349 @@
+{
+  "model_name": "StrokeSpeak Japanese Hiragana CNN",
+  "version": "1.0.0",
+  "script_code": "ja-hiragana",
+  "language": "Japanese",
+  "model_file": "japanese_hiragana_v1.pt",
+  "architecture": "LeNet-style 3-Stage ConvNet (Conv-BN-ReLU-MaxPool x3 + FC128 + FC10)",
+  "input_dimensions": [
+    1,
+    1,
+    32,
+    32
+  ],
+  "classes": [
+    "あ",
+    "い",
+    "う",
+    "え",
+    "お",
+    "か",
+    "き",
+    "く",
+    "け",
+    "こ"
+  ],
+  "num_classes": 10,
+  "preprocessing": {
+    "grayscale": true,
+    "invert_if_light_bg": true,
+    "otsu_thresholding": true,
+    "aspect_ratio_preserving_crop_and_pad": true,
+    "interpolation": "cv2.INTER_AREA",
+    "normalization": "float32 [0.0, 1.0]",
+    "target_size": 32
+  },
+  "dataset": {
+    "source": "inoueMashuu/hiragana-dataset (scanned real handwriting) + StrokeSpeak canvas samples",
+    "license": "Open Source",
+    "base_samples_per_class": 20,
+    "total_real_images": 200,
+    "train_samples": 1400,
+    "val_samples": 30,
+    "test_samples": 30
+  },
+  "metrics": {
+    "final_train_acc": 1.0,
+    "best_val_acc": 1.0,
+    "test_acc": 1.0,
+    "confusion_matrix": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ]
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.6198,
+      "train_acc": 0.8329,
+      "val_loss": 0.1193,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.0255,
+      "train_acc": 0.9986,
+      "val_loss": 0.0087,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.014,
+      "train_acc": 0.9986,
+      "val_loss": 0.0041,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0059,
+      "train_acc": 0.9993,
+      "val_loss": 0.0004,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.0031,
+      "train_acc": 1.0,
+      "val_loss": 0.0003,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.0026,
+      "train_acc": 1.0,
+      "val_loss": 0.0003,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.0017,
+      "train_acc": 1.0,
+      "val_loss": 0.0002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.0016,
+      "train_acc": 1.0,
+      "val_loss": 0.002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.002,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.0011,
+      "train_acc": 1.0,
+      "val_loss": 0.0002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.0008,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.0007,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.0006,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.0006,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.0003,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    }
+  ]
+}

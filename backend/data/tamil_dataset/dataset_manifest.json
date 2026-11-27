@@ -1,0 +1,422 @@
+{
+  "script_code": "ta",
+  "language": "Tamil",
+  "source": "StrokeSpeak Multi-Writer Orthographic Simulation Engine (Tamil Nadu State Board TNTB&ESC Standards)",
+  "license": "Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
+  "num_classes": 12,
+  "base_samples_per_class": 20,
+  "total_base_samples": 240,
+  "train_samples_per_class": 14,
+  "val_samples_per_class": 3,
+  "test_samples_per_class": 3,
+  "classes": {
+    "அ": {
+      "prefix": "vowel_A",
+      "character_id": 25,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_A_0.jpg",
+        "vowel_A_1.jpg",
+        "vowel_A_2.jpg",
+        "vowel_A_3.jpg",
+        "vowel_A_4.jpg",
+        "vowel_A_5.jpg",
+        "vowel_A_6.jpg",
+        "vowel_A_7.jpg",
+        "vowel_A_8.jpg",
+        "vowel_A_9.jpg",
+        "vowel_A_10.jpg",
+        "vowel_A_11.jpg",
+        "vowel_A_12.jpg",
+        "vowel_A_13.jpg"
+      ],
+      "val_files": [
+        "vowel_A_14.jpg",
+        "vowel_A_15.jpg",
+        "vowel_A_16.jpg"
+      ],
+      "test_files": [
+        "vowel_A_17.jpg",
+        "vowel_A_18.jpg",
+        "vowel_A_19.jpg"
+      ]
+    },
+    "ஆ": {
+      "prefix": "vowel_AA",
+      "character_id": 110,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_AA_0.jpg",
+        "vowel_AA_1.jpg",
+        "vowel_AA_2.jpg",
+        "vowel_AA_3.jpg",
+        "vowel_AA_4.jpg",
+        "vowel_AA_5.jpg",
+        "vowel_AA_6.jpg",
+        "vowel_AA_7.jpg",
+        "vowel_AA_8.jpg",
+        "vowel_AA_9.jpg",
+        "vowel_AA_10.jpg",
+        "vowel_AA_11.jpg",
+        "vowel_AA_12.jpg",
+        "vowel_AA_13.jpg"
+      ],
+      "val_files": [
+        "vowel_AA_14.jpg",
+        "vowel_AA_15.jpg",
+        "vowel_AA_16.jpg"
+      ],
+      "test_files": [
+        "vowel_AA_17.jpg",
+        "vowel_AA_18.jpg",
+        "vowel_AA_19.jpg"
+      ]
+    },
+    "இ": {
+      "prefix": "vowel_I",
+      "character_id": 111,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_I_0.jpg",
+        "vowel_I_1.jpg",
+        "vowel_I_2.jpg",
+        "vowel_I_3.jpg",
+        "vowel_I_4.jpg",
+        "vowel_I_5.jpg",
+        "vowel_I_6.jpg",
+        "vowel_I_7.jpg",
+        "vowel_I_8.jpg",
+        "vowel_I_9.jpg",
+        "vowel_I_10.jpg",
+        "vowel_I_11.jpg",
+        "vowel_I_12.jpg",
+        "vowel_I_13.jpg"
+      ],
+      "val_files": [
+        "vowel_I_14.jpg",
+        "vowel_I_15.jpg",
+        "vowel_I_16.jpg"
+      ],
+      "test_files": [
+        "vowel_I_17.jpg",
+        "vowel_I_18.jpg",
+        "vowel_I_19.jpg"
+      ]
+    },
+    "ஈ": {
+      "prefix": "vowel_II",
+      "character_id": 112,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_II_0.jpg",
+        "vowel_II_1.jpg",
+        "vowel_II_2.jpg",
+        "vowel_II_3.jpg",
+        "vowel_II_4.jpg",
+        "vowel_II_5.jpg",
+        "vowel_II_6.jpg",
+        "vowel_II_7.jpg",
+        "vowel_II_8.jpg",
+        "vowel_II_9.jpg",
+        "vowel_II_10.jpg",
+        "vowel_II_11.jpg",
+        "vowel_II_12.jpg",
+        "vowel_II_13.jpg"
+      ],
+      "val_files": [
+        "vowel_II_14.jpg",
+        "vowel_II_15.jpg",
+        "vowel_II_16.jpg"
+      ],
+      "test_files": [
+        "vowel_II_17.jpg",
+        "vowel_II_18.jpg",
+        "vowel_II_19.jpg"
+      ]
+    },
+    "உ": {
+      "prefix": "vowel_U",
+      "character_id": 113,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_U_0.jpg",
+        "vowel_U_1.jpg",
+        "vowel_U_2.jpg",
+        "vowel_U_3.jpg",
+        "vowel_U_4.jpg",
+        "vowel_U_5.jpg",
+        "vowel_U_6.jpg",
+        "vowel_U_7.jpg",
+        "vowel_U_8.jpg",
+        "vowel_U_9.jpg",
+        "vowel_U_10.jpg",
+        "vowel_U_11.jpg",
+        "vowel_U_12.jpg",
+        "vowel_U_13.jpg"
+      ],
+      "val_files": [
+        "vowel_U_14.jpg",
+        "vowel_U_15.jpg",
+        "vowel_U_16.jpg"
+      ],
+      "test_files": [
+        "vowel_U_17.jpg",
+        "vowel_U_18.jpg",
+        "vowel_U_19.jpg"
+      ]
+    },
+    "ஊ": {
+      "prefix": "vowel_UU",
+      "character_id": 114,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_UU_0.jpg",
+        "vowel_UU_1.jpg",
+        "vowel_UU_2.jpg",
+        "vowel_UU_3.jpg",
+        "vowel_UU_4.jpg",
+        "vowel_UU_5.jpg",
+        "vowel_UU_6.jpg",
+        "vowel_UU_7.jpg",
+        "vowel_UU_8.jpg",
+        "vowel_UU_9.jpg",
+        "vowel_UU_10.jpg",
+        "vowel_UU_11.jpg",
+        "vowel_UU_12.jpg",
+        "vowel_UU_13.jpg"
+      ],
+      "val_files": [
+        "vowel_UU_14.jpg",
+        "vowel_UU_15.jpg",
+        "vowel_UU_16.jpg"
+      ],
+      "test_files": [
+        "vowel_UU_17.jpg",
+        "vowel_UU_18.jpg",
+        "vowel_UU_19.jpg"
+      ]
+    },
+    "எ": {
+      "prefix": "vowel_E",
+      "character_id": 115,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_E_0.jpg",
+        "vowel_E_1.jpg",
+        "vowel_E_2.jpg",
+        "vowel_E_3.jpg",
+        "vowel_E_4.jpg",
+        "vowel_E_5.jpg",
+        "vowel_E_6.jpg",
+        "vowel_E_7.jpg",
+        "vowel_E_8.jpg",
+        "vowel_E_9.jpg",
+        "vowel_E_10.jpg",
+        "vowel_E_11.jpg",
+        "vowel_E_12.jpg",
+        "vowel_E_13.jpg"
+      ],
+      "val_files": [
+        "vowel_E_14.jpg",
+        "vowel_E_15.jpg",
+        "vowel_E_16.jpg"
+      ],
+      "test_files": [
+        "vowel_E_17.jpg",
+        "vowel_E_18.jpg",
+        "vowel_E_19.jpg"
+      ]
+    },
+    "ஏ": {
+      "prefix": "vowel_EE",
+      "character_id": 116,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_EE_0.jpg",
+        "vowel_EE_1.jpg",
+        "vowel_EE_2.jpg",
+        "vowel_EE_3.jpg",
+        "vowel_EE_4.jpg",
+        "vowel_EE_5.jpg",
+        "vowel_EE_6.jpg",
+        "vowel_EE_7.jpg",
+        "vowel_EE_8.jpg",
+        "vowel_EE_9.jpg",
+        "vowel_EE_10.jpg",
+        "vowel_EE_11.jpg",
+        "vowel_EE_12.jpg",
+        "vowel_EE_13.jpg"
+      ],
+      "val_files": [
+        "vowel_EE_14.jpg",
+        "vowel_EE_15.jpg",
+        "vowel_EE_16.jpg"
+      ],
+      "test_files": [
+        "vowel_EE_17.jpg",
+        "vowel_EE_18.jpg",
+        "vowel_EE_19.jpg"
+      ]
+    },
+    "ஐ": {
+      "prefix": "vowel_AI",
+      "character_id": 117,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_AI_0.jpg",
+        "vowel_AI_1.jpg",
+        "vowel_AI_2.jpg",
+        "vowel_AI_3.jpg",
+        "vowel_AI_4.jpg",
+        "vowel_AI_5.jpg",
+        "vowel_AI_6.jpg",
+        "vowel_AI_7.jpg",
+        "vowel_AI_8.jpg",
+        "vowel_AI_9.jpg",
+        "vowel_AI_10.jpg",
+        "vowel_AI_11.jpg",
+        "vowel_AI_12.jpg",
+        "vowel_AI_13.jpg"
+      ],
+      "val_files": [
+        "vowel_AI_14.jpg",
+        "vowel_AI_15.jpg",
+        "vowel_AI_16.jpg"
+      ],
+      "test_files": [
+        "vowel_AI_17.jpg",
+        "vowel_AI_18.jpg",
+        "vowel_AI_19.jpg"
+      ]
+    },
+    "ஒ": {
+      "prefix": "vowel_O",
+      "character_id": 118,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_O_0.jpg",
+        "vowel_O_1.jpg",
+        "vowel_O_2.jpg",
+        "vowel_O_3.jpg",
+        "vowel_O_4.jpg",
+        "vowel_O_5.jpg",
+        "vowel_O_6.jpg",
+        "vowel_O_7.jpg",
+        "vowel_O_8.jpg",
+        "vowel_O_9.jpg",
+        "vowel_O_10.jpg",
+        "vowel_O_11.jpg",
+        "vowel_O_12.jpg",
+        "vowel_O_13.jpg"
+      ],
+      "val_files": [
+        "vowel_O_14.jpg",
+        "vowel_O_15.jpg",
+        "vowel_O_16.jpg"
+      ],
+      "test_files": [
+        "vowel_O_17.jpg",
+        "vowel_O_18.jpg",
+        "vowel_O_19.jpg"
+      ]
+    },
+    "ஓ": {
+      "prefix": "vowel_OO",
+      "character_id": 119,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_OO_0.jpg",
+        "vowel_OO_1.jpg",
+        "vowel_OO_2.jpg",
+        "vowel_OO_3.jpg",
+        "vowel_OO_4.jpg",
+        "vowel_OO_5.jpg",
+        "vowel_OO_6.jpg",
+        "vowel_OO_7.jpg",
+        "vowel_OO_8.jpg",
+        "vowel_OO_9.jpg",
+        "vowel_OO_10.jpg",
+        "vowel_OO_11.jpg",
+        "vowel_OO_12.jpg",
+        "vowel_OO_13.jpg"
+      ],
+      "val_files": [
+        "vowel_OO_14.jpg",
+        "vowel_OO_15.jpg",
+        "vowel_OO_16.jpg"
+      ],
+      "test_files": [
+        "vowel_OO_17.jpg",
+        "vowel_OO_18.jpg",
+        "vowel_OO_19.jpg"
+      ]
+    },
+    "ஔ": {
+      "prefix": "vowel_AU",
+      "character_id": 120,
+      "total_samples": 20,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 3,
+      "train_files": [
+        "vowel_AU_0.jpg",
+        "vowel_AU_1.jpg",
+        "vowel_AU_2.jpg",
+        "vowel_AU_3.jpg",
+        "vowel_AU_4.jpg",
+        "vowel_AU_5.jpg",
+        "vowel_AU_6.jpg",
+        "vowel_AU_7.jpg",
+        "vowel_AU_8.jpg",
+        "vowel_AU_9.jpg",
+        "vowel_AU_10.jpg",
+        "vowel_AU_11.jpg",
+        "vowel_AU_12.jpg",
+        "vowel_AU_13.jpg"
+      ],
+      "val_files": [
+        "vowel_AU_14.jpg",
+        "vowel_AU_15.jpg",
+        "vowel_AU_16.jpg"
+      ],
+      "test_files": [
+        "vowel_AU_17.jpg",
+        "vowel_AU_18.jpg",
+        "vowel_AU_19.jpg"
+      ]
+    }
+  }
+}

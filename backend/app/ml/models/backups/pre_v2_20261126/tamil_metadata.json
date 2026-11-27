@@ -1,0 +1,642 @@
+{
+  "model_name": "StrokeSpeak Tamil CNN",
+  "version": "1.0.0",
+  "script_code": "ta",
+  "language": "Tamil",
+  "model_file": "tamil_v1.pt",
+  "weights_file": "tamil_weights.pt",
+  "architecture": "LeNet-style 3-Stage ConvNet (Conv-BN-ReLU-MaxPool x3 + FC128 + FC12)",
+  "input_dimensions": [
+    1,
+    1,
+    32,
+    32
+  ],
+  "classes": [
+    "அ",
+    "ஆ",
+    "இ",
+    "ஈ",
+    "உ",
+    "ஊ",
+    "எ",
+    "ஏ",
+    "ஐ",
+    "ஒ",
+    "ஓ",
+    "ஔ"
+  ],
+  "class_prefixes": [
+    "vowel_A",
+    "vowel_AA",
+    "vowel_I",
+    "vowel_II",
+    "vowel_U",
+    "vowel_UU",
+    "vowel_E",
+    "vowel_EE",
+    "vowel_AI",
+    "vowel_O",
+    "vowel_OO",
+    "vowel_AU"
+  ],
+  "num_classes": 12,
+  "preprocessing": {
+    "grayscale": true,
+    "invert_if_light_bg": true,
+    "otsu_thresholding": true,
+    "aspect_ratio_preserving_crop_and_pad": true,
+    "interpolation": "cv2.INTER_AREA",
+    "normalization": "float32 [0.0, 1.0]",
+    "target_size": 32
+  },
+  "dataset": {
+    "provenance": "SYNTHETIC (Procedural Vector Motor Simulation)",
+    "license": "Internal StrokeSpeak Project Asset",
+    "base_samples_per_class": 20,
+    "total_base_images": 240,
+    "train_samples": 1680,
+    "val_samples": 36,
+    "test_samples": 36,
+    "per_class_summary": {
+      "அ": {
+        "folder": "vowel_A",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ஆ": {
+        "folder": "vowel_AA",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "இ": {
+        "folder": "vowel_I",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ஈ": {
+        "folder": "vowel_II",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "உ": {
+        "folder": "vowel_U",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ஊ": {
+        "folder": "vowel_UU",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "எ": {
+        "folder": "vowel_E",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ஏ": {
+        "folder": "vowel_EE",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ஐ": {
+        "folder": "vowel_AI",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ஒ": {
+        "folder": "vowel_O",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ஓ": {
+        "folder": "vowel_OO",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      },
+      "ஔ": {
+        "folder": "vowel_AU",
+        "base_total": 20,
+        "train_base": 14,
+        "train_augmented": 140,
+        "val_unaugmented": 3,
+        "test_unaugmented": 3
+      }
+    }
+  },
+  "metrics": {
+    "benchmark_type": "Synthetic-Data Benchmark Results (Tier 1 Held-Out Test Split)",
+    "evaluation_scope": "Held-out unaugmented synthetic motor simulations; does not represent unconstrained human handwriting.",
+    "total_test_samples": 36,
+    "correct_predictions": 36,
+    "accuracy": 1.0,
+    "accuracy_pct": 100.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "macro_f1_pct": 100.0,
+    "per_class": {
+      "அ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ஆ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "இ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ஈ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "உ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ஊ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "எ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ஏ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ஐ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ஒ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ஓ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ஔ": {
+        "true_count": 3,
+        "predicted_count": 3,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ]
+  },
+  "training_duration_seconds": 11.78,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.0315,
+      "train_acc": 0.7417,
+      "val_loss": 0.0859,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.079,
+      "train_acc": 0.9893,
+      "val_loss": 0.0051,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.0231,
+      "train_acc": 0.9982,
+      "val_loss": 0.0013,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0119,
+      "train_acc": 1.0,
+      "val_loss": 0.0015,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.0066,
+      "train_acc": 1.0,
+      "val_loss": 0.0006,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.0051,
+      "train_acc": 1.0,
+      "val_loss": 0.0003,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.0036,
+      "train_acc": 1.0,
+      "val_loss": 0.0002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.0027,
+      "train_acc": 1.0,
+      "val_loss": 0.0002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.0022,
+      "train_acc": 1.0,
+      "val_loss": 0.0002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.0013,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.0012,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.0009,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.0009,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.0008,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.0007,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.0008,
+      "train_acc": 1.0,
+      "val_loss": 0.0002,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.0007,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.0006,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0005,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.0005,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.0005,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.0006,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0001,
+      "val_acc": 1.0
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.0004,
+      "train_acc": 1.0,
+      "val_loss": 0.0,
+      "val_acc": 1.0
+    }
+  ]
+}

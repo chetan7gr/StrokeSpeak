@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+  <meta charset="UTF-8">
+  <title>StrokeSpeak — Sanskrit Devanagari Stroke Visualizer & Tuner</title>
+  <style>
+    body { font-family: 'Nirmala UI', 'Mangal', sans-serif; background: #0f172a; color: #fff; padding: 20px; }
+    h1 { font-size: 24px; margin-bottom: 5px; }
+    p { color: #94a3b8; margin-top: 0; margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .card { background: #1e293b; border-radius: 12px; padding: 18px; border: 1px solid #334155; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+    .card-title { font-size: 20px; font-weight: bold; color: #38bdf8; }
+    .card-meta { font-size: 13px; color: #94a3b8; }
+    .stages { display: grid; grid-template-columns: 180px 1fr; gap: 16px; }
+    
+    /* Step 1 reference stage */
+    .ref-stage { position: relative; width: 180px; height: 180px; background: #1f2c42; border-radius: 8px; border: 1px solid #475569; overflow: hidden; }
+    .ref-stage svg { width: 100%; height: 100%; }
+    .ref-watermark { fill: rgba(255, 255, 255, 0.22); font-size: 56px; font-family: 'Nirmala UI', 'Mangal', sans-serif; }
+    
+    /* Step 2 canvas stage */
+    .canvas-stage { position: relative; width: 100%; height: 180px; background: #ffffff; border-radius: 8px; border: 2px dashed #cbd5e1; overflow: hidden; }
+    .canvas-watermark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 96px; color: #e2e8f0; pointer-events: none; font-family: 'Nirmala UI', 'Mangal', sans-serif; }
+    .canvas-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    
+    .stroke-path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .s-0 { stroke: #3b82f6; stroke-width: 3.5; }
+    .s-1 { stroke: #10b981; stroke-width: 3.5; }
+    .s-2 { stroke: #f59e0b; stroke-width: 3.5; }
+    .s-3 { stroke: #ef4444; stroke-width: 3.5; }
+    .s-4 { stroke: #8b5cf6; stroke-width: 3.5; }
+    .s-5 { stroke: #ec4899; stroke-width: 3.5; }
+    .s-6 { stroke: #06b6d4; stroke-width: 3.5; }
+    .s-7 { stroke: #84cc16; stroke-width: 3.5; }
+    
+    .canvas-polyline { fill: none; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; opacity: 0.6; }
+    .cp-0 { stroke: #3b82f6; } .cp-1 { stroke: #10b981; } .cp-2 { stroke: #f59e0b; } .cp-3 { stroke: #ef4444; }
+    .cp-4 { stroke: #8b5cf6; } .cp-5 { stroke: #ec4899; } .cp-6 { stroke: #06b6d4; } .cp-7 { stroke: #84cc16; }
+
+    .stroke-legend { display: flex; gap: 8px; margin-top: 10px; font-size: 11px; flex-wrap: wrap; }
+    .legend-item { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; background: #334155; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .d-0 { background: #3b82f6; } .d-1 { background: #10b981; } .d-2 { background: #f59e0b; } .d-3 { background: #ef4444; }
+    .d-4 { background: #8b5cf6; } .d-5 { background: #ec4899; } .d-6 { background: #06b6d4; } .d-7 { background: #84cc16; }
+    
+    .status-badge { padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: bold; background: #065f46; color: #a7f3d0; }
+  </style>
+</head>
+<body>
+  <h1>StrokeSpeak — Sanskrit Devanagari Reference Stroke Visualizer & Tuner</h1>
+  <p>Comparing Animated SVG Path (Left: 100×100) and Canvas Ghost Guide (Right: 700×320) directly over authentic Nirmala UI font watermark.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    function linePoints(p0, p1, n=12) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const t = i / (n - 1);
+        pts.push({
+          x: Math.round((p0.x + (p1.x - p0.x) * t) * 100) / 100,
+          y: Math.round((p0.y + (p1.y - p0.y) * t) * 100) / 100
+        });
+      }
+      return pts;
+    }
+
+    function quadPoints(p0, p1, p2, n=16) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const t = i / (n - 1);
+        const u = 1 - t;
+        pts.push({
+          x: Math.round((u*u*p0.x + 2*u*t*p1.x + t*t*p2.x) * 100) / 100,
+          y: Math.round((u*u*p0.y + 2*u*t*p1.y + t*t*p2.y) * 100) / 100
+        });
+      }
+      return pts;
+    }
+
+    function cubicPoints(p0, p1, p2, p3, n=20) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const t = i / (n - 1);
+        const u = 1 - t;
+        pts.push({
+          x: Math.round((u*u*u*p0.x + 3*u*u*t*p1.x + 3*u*t*t*p2.x + t*t*t*p3.x) * 100) / 100,
+          y: Math.round((u*u*u*p0.y + 3*u*u*t*p1.y + 3*u*t*t*p2.y + t*t*t*p3.y) * 100) / 100
+        });
+      }
+      return pts;
+    }
+
+    // Authoritative Sanskrit Devanagari Vowel Definitions
+    // Follows NCERT standard Devanagari stroke order:
+    // 1. Shirorekha is drawn LAST.
+    // 2. For अ, आ, ओ, औ: shirorekha covers ONLY the vertical stem, NOT the left vowel curve.
+    // 3. इ/ई has the characteristic lower knot/loop before the diagonal tail.
+    // 4. ए/ऐ has the left vertical diagonal and right descending inward-curving stem.
+    const sanskritDefinitions = {
+      // 1. अ (ID 216) · 5 strokes
+      "अ": {
+        id: 216,
+        name: "अ (a)",
+        strokes: [
+          // Stroke 1: Upper curve (similar to top half of 3)
+          quadPoints({x:30, y:28}, {x:46, y:25}, {x:36, y:46}, 16),
+          // Stroke 2: Lower curve (bottom half of 3, curling slightly up)
+          quadPoints({x:36, y:46}, {x:50, y:58}, {x:24, y:72}, 18),
+          // Stroke 3: Horizontal connecting middle arm
+          linePoints({x:38, y:48}, {x:64, y:48}, 12),
+          // Stroke 4: Vertical stem (daṇḍa)
+          linePoints({x:64, y:22}, {x:64, y:76}, 18),
+          // Stroke 5: Shirorekha over vertical stem only (broken shirorekha!)
+          linePoints({x:54, y:22}, {x:76, y:22}, 12)
+        ]
+      },
+
+      // 2. आ (ID 217) · 6 strokes
+      "आ": {
+        id: 217,
+        name: "आ (ā)",
+        strokes: [
+          // Stroke 1: Upper curve
+          quadPoints({x:24, y:28}, {x:38, y:25}, {x:30, y:46}, 16),
+          // Stroke 2: Lower curve
+          quadPoints({x:30, y:46}, {x:44, y:58}, {x:18, y:72}, 18),
+          // Stroke 3: Horizontal connector
+          linePoints({x:32, y:48}, {x:54, y:48}, 12),
+          // Stroke 4: First vertical stem
+          linePoints({x:54, y:22}, {x:54, y:76}, 18),
+          // Stroke 5: Second vertical stem (mātrā daṇḍa)
+          linePoints({x:72, y:22}, {x:72, y:76}, 18),
+          // Stroke 6: Shirorekha across both vertical stems (from X=46 to X=82)
+          linePoints({x:46, y:22}, {x:82, y:22}, 14)
+        ]
+      },
+
+      // 3. इ (ID 218) · 4 strokes
+      "इ": {
+        id: 218,
+        name: "इ (i)",
+        strokes: [
+          // Stroke 1: Small top vertical tick downwards
+          linePoints({x:50, y:22}, {x:50, y:30}, 8),
+          // Stroke 2: S-curve (right, down, left, right)
+          [
+            ...quadPoints({x:50, y:30}, {x:66, y:32}, {x:52, y:46}, 12),
+            ...quadPoints({x:52, y:46}, {x:36, y:56}, {x:56, y:66}, 14)
+          ],
+          // Stroke 3: Lower knot/loop and diagonal tail descending to lower-left
+          [
+            ...cubicPoints({x:56, y:66}, {x:64, y:72}, {x:54, y:76}, {x:46, y:70}, 12),
+            ...linePoints({x:46, y:70}, {x:32, y:82}, 10)
+          ],
+          // Stroke 4: Shirorekha
+          linePoints({x:32, y:22}, {x:68, y:22}, 14)
+        ]
+      },
+
+      // 4. ई (ID 219) · 5 strokes
+      "ई": {
+        id: 219,
+        name: "ई (ī)",
+        strokes: [
+          // Stroke 1: Small top vertical tick
+          linePoints({x:50, y:22}, {x:50, y:30}, 8),
+          // Stroke 2: S-curve
+          [
+            ...quadPoints({x:50, y:30}, {x:66, y:32}, {x:52, y:46}, 12),
+            ...quadPoints({x:52, y:46}, {x:36, y:56}, {x:56, y:66}, 14)
+          ],
+          // Stroke 3: Lower knot and descending tail
+          [
+            ...cubicPoints({x:56, y:66}, {x:64, y:72}, {x:54, y:76}, {x:46, y:70}, 12),
+            ...linePoints({x:46, y:70}, {x:32, y:82}, 10)
+          ],
+          // Stroke 4: Shirorekha
+          linePoints({x:32, y:22}, {x:68, y:22}, 14),
+          // Stroke 5: Upper rightward arch (reph/mātrā) curving up and right
+          cubicPoints({x:48, y:22}, {x:56, y:12}, {x:68, y:12}, {x:72, y:20}, 14)
+        ]
+      },
+
+      // 5. उ (ID 220) · 3 strokes
+      "उ": {
+        id: 220,
+        name: "उ (u)",
+        strokes: [
+          // Stroke 1: Upper curve
+          quadPoints({x:32, y:28}, {x:52, y:25}, {x:40, y:48}, 16),
+          // Stroke 2: Lower curve with extended upward sweep
+          quadPoints({x:40, y:48}, {x:60, y:62}, {x:24, y:75}, 20),
+          // Stroke 3: Shirorekha
+          linePoints({x:26, y:22}, {x:58, y:22}, 14)
+        ]
+      },
+
+      // 6. ऊ (ID 221) · 4 strokes
+      "ऊ": {
+        id: 221,
+        name: "ऊ (ū)",
+        strokes: [
+          // Stroke 1: Upper curve
+          quadPoints({x:30, y:28}, {x:50, y:25}, {x:38, y:48}, 16),
+          // Stroke 2: Lower curve
+          quadPoints({x:38, y:48}, {x:58, y:62}, {x:22, y:75}, 20),
+          // Stroke 3: Middle tail/hook curving out from waist to the right and down
+          cubicPoints({x:44, y:50}, {x:58, y:50}, {x:66, y:58}, {x:62, y:74}, 16),
+          // Stroke 4: Shirorekha
+          linePoints({x:24, y:22}, {x:56, y:22}, 14)
+        ]
+      },
+
+      // 7. ए (ID 223) · 3 strokes
+      "ए": {
+        id: 223,
+        name: "ए (e)",
+        strokes: [
+          // Stroke 1: Left vertical descending into rightward diagonal
+          [
+            ...linePoints({x:38, y:22}, {x:38, y:48}, 12),
+            ...linePoints({x:38, y:48}, {x:56, y:74}, 14)
+          ],
+          // Stroke 2: Right vertical descending and turning horizontally inward
+          [
+            ...linePoints({x:62, y:22}, {x:62, y:50}, 12),
+            ...linePoints({x:62, y:50}, {x:50, y:52}, 10)
+          ],
+          // Stroke 3: Shirorekha
+          linePoints({x:28, y:22}, {x:72, y:22}, 14)
+        ]
+      },
+
+      // 8. ऐ (ID 224) · 4 strokes
+      "ऐ": {
+        id: 224,
+        name: "ऐ (ai)",
+        strokes: [
+          // Stroke 1: Left vertical and diagonal
+          [
+            ...linePoints({x:38, y:22}, {x:38, y:48}, 12),
+            ...linePoints({x:38, y:48}, {x:56, y:74}, 14)
+          ],
+          // Stroke 2: Right vertical and inward turn
+          [
+            ...linePoints({x:62, y:22}, {x:62, y:50}, 12),
+            ...linePoints({x:62, y:50}, {x:50, y:52}, 10)
+          ],
+          // Stroke 3: Shirorekha
+          linePoints({x:28, y:22}, {x:72, y:22}, 14),
+          // Stroke 4: Top slanted matra (up-left from above left stem)
+          linePoints({x:44, y:22}, {x:32, y:8}, 12)
+        ]
+      },
+
+      // 9. ओ (ID 225) · 7 strokes
+      "ओ": {
+        id: 225,
+        name: "ओ (o)",
+        strokes: [
+          // Stroke 1: Upper curve
+          quadPoints({x:24, y:28}, {x:38, y:25}, {x:30, y:46}, 16),
+          // Stroke 2: Lower curve
+          quadPoints({x:30, y:46}, {x:44, y:58}, {x:18, y:72}, 18),
+          // Stroke 3: Horizontal connector
+          linePoints({x:32, y:48}, {x:54, y:48}, 12),
+          // Stroke 4: First vertical stem
+          linePoints({x:54, y:22}, {x:54, y:76}, 18),
+          // Stroke 5: Second vertical stem
+          linePoints({x:72, y:22}, {x:72, y:76}, 18),
+          // Stroke 6: Top slanted matra from second vertical stem
+          linePoints({x:72, y:22}, {x:58, y:8}, 14),
+          // Stroke 7: Shirorekha across vertical stems
+          linePoints({x:46, y:22}, {x:82, y:22}, 14)
+        ]
+      },
+
+      // 10. औ (ID 226) · 8 strokes
+      "औ": {
+        id: 226,
+        name: "औ (au)",
+        strokes: [
+          // Stroke 1: Upper curve
+          quadPoints({x:24, y:28}, {x:38, y:25}, {x:30, y:46}, 16),
+          // Stroke 2: Lower curve
+          quadPoints({x:30, y:46}, {x:44, y:58}, {x:18, y:72}, 18),
+          // Stroke 3: Horizontal connector
+          linePoints({x:32, y:48}, {x:54, y:48}, 12),
+          // Stroke 4: First vertical stem
+          linePoints({x:54, y:22}, {x:54, y:76}, 18),
+          // Stroke 5: Second vertical stem
+          linePoints({x:72, y:22}, {x:72, y:76}, 18),
+          // Stroke 6: First top slanted matra from second stem
+          linePoints({x:72, y:22}, {x:60, y:8}, 14),
+          // Stroke 7: Second top slanted matra from second stem
+          linePoints({x:72, y:22}, {x:48, y:8}, 14),
+          // Stroke 8: Shirorekha across vertical stems
+          linePoints({x:46, y:22}, {x:82, y:22}, 14)
+        ]
+      }
+    };
+
+    function ptsToSvgD(pts) {
+      if (!pts || pts.length === 0) return "";
+      let d = `M ${pts[0].x} ${pts[0].y}`;
+      for (let i = 1; i < pts.length; i++) {
+        d += ` L ${pts[i].x} ${pts[i].y}`;
+      }
+      return d;
+    }
+
+    // High-fidelity Canvas 700x320 normalization (1:1 aspect ratio centered at 350, 160)
+    function toCanvasNorm(p) {
+      const pxX = 350 + (p.x - 50) * 2.45;
+      const pxY = 160 + (p.y - 50) * 2.45;
+      return {
+        x: Math.round((pxX / 700) * 1000000) / 1000000,
+        y: Math.round((pxY / 320) * 1000000) / 1000000
+      };
+    }
+
+    const grid = document.getElementById("grid");
+
+    Object.entries(sanskritDefinitions).forEach(([char, def], idx) => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const header = document.createElement("div");
+      header.className = "card-header";
+      header.innerHTML = `
+        <div>
+          <span class="card-title">${idx + 1}. ${def.name}</span>
+          <span class="card-meta"> &middot; ID ${def.id} &middot; ${def.strokes.length} strokes</span>
+        </div>
+        <span class="status-badge">&check; NCERT Orthography</span>
+      `;
+      card.appendChild(header);
+
+      const stages = document.createElement("div");
+      stages.className = "stages";
+
+      // 1. Ref stage (Step 1 Watch)
+      const refStage = document.createElement("div");
+      refStage.className = "ref-stage";
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 100 100");
+      svg.innerHTML = `
+        <text x="50" y="52" text-anchor="middle" dominant-baseline="central" class="ref-watermark">${char}</text>
+      `;
+
+      def.strokes.forEach((strokePts, sIdx) => {
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", ptsToSvgD(strokePts));
+        path.setAttribute("class", `stroke-path s-${sIdx % 8}`);
+        svg.appendChild(path);
+      });
+      refStage.appendChild(svg);
+      stages.appendChild(refStage);
+
+      // 2. Canvas stage (Step 2 Practice)
+      const canvasStage = document.createElement("div");
+      canvasStage.className = "canvas-stage";
+      canvasStage.innerHTML = `<div class="canvas-watermark">${char}</div>`;
+      
+      const canvasSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      canvasSvg.setAttribute("viewBox", "0 0 700 320");
+      canvasSvg.setAttribute("preserveAspectRatio", "none");
+
+      def.strokes.forEach((strokePts, sIdx) => {
+        const normPts = strokePts.map(toCanvasNorm);
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+        polyline.setAttribute("points", normPts.map(p => `${p.x * 700},${p.y * 320}`).join(" "));
+        polyline.setAttribute("class", `canvas-polyline cp-${sIdx % 8}`);
+        canvasSvg.appendChild(polyline);
+      });
+      canvasStage.appendChild(canvasSvg);
+      stages.appendChild(canvasStage);
+
+      card.appendChild(stages);
+
+      // Legend
+      const legend = document.createElement("div");
+      legend.className = "stroke-legend";
+      def.strokes.forEach((_, sIdx) => {
+        legend.innerHTML += `
+          <div class="legend-item">
+            <span class="dot d-${sIdx % 8}"></span>
+            <span>Stroke ${sIdx + 1} (${def.strokes[sIdx].length} pts)</span>
+          </div>
+        `;
+      });
+      card.appendChild(legend);
+
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
